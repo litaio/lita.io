@@ -1,0 +1,78 @@
+---
+title: "Plugin Authoring: Localization"
+---
+
+.container
+  .page-header
+    %h1 Plugin Authoring
+
+  .row
+    .col-md-3= partial "plugin-authoring/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Localization
+
+      %p Lita is internationalized, and you're encouraged to extract all language-specific strings into a locale file instead of hardcoding them into your Ruby code. Plugins created with Lita's generator make this very easy to do. In the root of your plugin's directory, you will find a <code>locales</code> directory with an <code>en.yml</code> file. Inside that file, you'll see <a href="http://www.yaml.org/">YAML</a> like this:
+
+      %pre
+        %code
+          :preserve
+            en:
+              lita:
+                handlers:
+                  your_handler_name:
+
+      %p Language strings should be inserted as key/value pairs under your Handler's namespace in the YAML file. These keys can then be translated at runtime by using the <code>translate</code> method (aliased to <code>t</code>) available at both the class and instance level inside your plugin. If we take a look at the route example from before:
+
+      %pre
+        %code.ruby
+          :preserve
+            route /^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
+              "echo TEXT" => "Replies back with TEXT."
+            }
+
+      %p An internationalized version of this would look like this:
+
+      %pre
+        %code.ruby
+          :preserve
+            route /^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
+              t("help.echo_key") => t("help.echo_value")
+            }
+
+      %p With <code>en.yml</code> filled in accordingly:
+
+      %pre
+        %code
+          :preserve
+            en:
+              lita:
+                handlers:
+                  your_handler_name:
+                    help:
+                      echo_key: echo FOO
+                      echo_value: Replies back with FOO.
+
+      %p Note that the period in the translation's key represents a nested level in the YAML file.
+
+      %p If you need to translate a string in an object that doesn't inherit from <code>Lita::Adapter</code> or <code>Lita::Handler</code> (and therefore doesn't include the <code>translate</code> method), you should use <code>I18n.translate</code> and pass it the full key, e.g. <code>"lita.handlers.your_handler_name.help.echo_key"</code>.
+
+      %p If you need to interpolate values into the string when it's translated, you can pass an optional hash of variable keys and values to the <code>translate</code> method:
+
+      %pre
+        %code.ruby
+          :preserve
+            translate("greet", name: user.name)
+
+      %pre
+        %code
+          :preserve
+            en:
+              lita:
+                handlers:
+                  your_handler_name:
+                    greet: "Hello, %{name}!"
+
+      %p The <code>%{}</code> syntax in the YAML interpolates the variable with the given name.
+
+      %p To add additional localizations for your plugin, create additional YAML files in the <code>locales</code> directory, using the locale code for the language. Any file ending in <code>.yml</code> will be loaded by Lita. The contents of each locale file should have the same structure of keys, except the very top key should be the locale code, and of course, all the values should be written in the given language.

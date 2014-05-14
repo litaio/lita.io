@@ -1,0 +1,42 @@
+---
+title: Getting Started
+---
+
+.container
+  .page-header
+    %h1 Getting Started
+
+  .row
+    .col-md-3= partial "getting-started/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Overview
+
+      %p <strong>Lita</strong> is a <a href="https://en.wikipedia.org/wiki/Chatterbot">chat bot</a> written in <a href="https://www.ruby-lang.org/">Ruby</a> with persistent storage provided by <a href="http://redis.io/">Redis</a>. It uses a plugin system to connect to different chat services and to provide new behavior. The plugin system uses the familiar tools of the Ruby ecosystem: <a href="https://rubygems.org/">RubyGems</a> and <a href="http://bundler.io/">Bundler</a>.
+
+      %h3#features Features
+
+      %ul
+        %li Can connect to any chat service
+        %li Simple installation and setup
+        %li Easily extendable with plugins
+        %li Data persistence with Redis
+        %li Built-in web server and routing
+        %li Event system for behavior triggered in response to arbitrary events
+        %li Support for outgoing HTTP requests
+        %li Group-based authorization
+        %li Internationalization
+        %li Configurable logging
+        %li Generators for creating new plugins
+        %li Built-in process daemonization
+
+      %h3#coming-from-hubot Coming from Hubot
+
+      %p Lita draws much inspiration from GitHub's fantastic <a href="http://hubot.github.com/">Hubot</a>, but has a few key differences and strengths:
+
+      %ul
+        %li It's written in Ruby.
+        %li It exposes the full power of Redis rather than using it to serialize JSON.
+        %li It's easy to develop and test plugins for with the provied <a href="https://github.com/rspec/rspec">RSpec</a> extras. Lita strongly encourages thorough testing of plugins.
+        %li It uses the Ruby ecosystem's standard tools (RubyGems and Bundler) for plugin installation and loading.
+        %li It's thoroughly documented.

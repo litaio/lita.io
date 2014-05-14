@@ -1,0 +1,74 @@
+---
+title: "Plugin Authoring: Adapters"
+---
+
+.container
+  .page-header
+    %h1 Plugin Authoring
+
+  .row
+    .col-md-3= partial "plugin-authoring/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Adapters
+
+      %p An adapter is a plugin that allows Lita to connect to a particular chat service. It's a class that inherits from <code>Lita::Adapter</code>, implements a set of required methods, and is registered with Lita. Though not necessary, it's convention for the class to be within the <code>Lita::Adapters</code> namespace.
+
+      %p It's important to note that each adapter should employ its own concurrency mechanism (threads, events, etc.) so that incoming messages can still be processed even while a handler is processing a previous message.
+
+      %h3#examples Examples
+
+      %p Here is a bare bones example of an adapter for the fictitious chat service, FancyChat.
+
+      %pre
+        %code.ruby
+          :preserve
+            require 'fancy_chat'
+
+            module Lita
+              module Adapters
+                class FancyChatAdapter < Adapter
+                  # Optional. Makes the bot produce an error message and quit upon start up
+                  # if `config.adapter.username` or `config.adapter.password` are not set.
+                  require_configs :username, :password
+
+                  # Sets up the adapter and creates a new chat service client, using the
+                  # fictitious `fancy_chat` gem.
+                  def initialize(robot)
+                    super
+                    @client = FancyChat.new(Lita.config.adapter.username, Lita.config.adapter.password)
+                  end
+
+                  # Connects to the chat service and dispatches incoming messages to a
+                  # Lita::Robot instance.
+                  def run
+                    @client.connect
+                    sleep
+                  rescue Interrupt
+                    shut_down
+                  end
+
+                  # Sends messages from the robot to a user or room on the chat service.
+                  def send_messages(target, strings)
+                    strings.each { |string| @client.message(target, string) }
+                  end
+
+                  # Sets the topic for a chat room.
+                  def set_topic(room, new_topic)
+                    @client.topic(room, new_topic)
+                  end
+
+                  # Does any clean up necessary when disconnecting from the chat service.
+                  def shut_down
+                    @client.safe_shut_down
+                  end
+                end
+
+                # Adds the adapter to Lita's adapter registry. Users can now use the adapter
+                # by adding it to their Gemfile and setting `Lita.config.robot.adapter` to
+                # `:fancy_chat`.
+                Lita.register_adapter(:fancy_chat, FancyChatAdapter)
+              end
+            end
+
+      %p For more detailed examples, check out the built in shell adapter, <a href="https://github.com/jimmycuadra/lita-hipchat">lita-hipchat</a>, or <a href="https://github.com/jimmycuadra/lita-irc">lita-irc</a>. Refer to the <a href="http://rdoc.info/gems/lita/frames">API documentation</a> for the exact API adapters must implement.

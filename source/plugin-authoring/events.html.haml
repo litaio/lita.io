@@ -1,0 +1,53 @@
+---
+title: "Plugin Authoring: Events"
+---
+
+.container
+  .page-header
+    %h1 Plugin Authoring
+
+  .row
+    .col-md-3= partial "plugin-authoring/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Events
+
+      %p Handlers can communicate with each other or respond to arbitrary system events with the built-in pub-sub event system. Subscribe to an event by name, and provide the name of the instance method that should be invoked when the event triggers. Event callback methods are passed a payload hash with any arbitrary data the caller chooses to provide.
+
+      %pre
+        %code.ruby
+          :preserve
+            on :connected, :greet
+
+            def greet(payload)
+              target = Source.new(room: payload[:room])
+              robot.send_message(target, "Hello \#{payload[:room]}!")
+            end
+
+      %p Trigger an event from anywhere and pass any payload data you want the subscribed handlers to receive:
+
+      %pre
+        %code.ruby robot.trigger(:connected, room: "#litabot")
+
+      %p Since the <code>trigger</code> method is available on <code>Lita::Robot</code>, it can be used from anywhere in the Lita runtime (both adapters and handlers). This is useful in adapters to signal handlers about events such as server connection and channel joins.
+
+      %h3#built-in-events Built-in events
+
+      %p Lita has a few built-in events:
+
+      %table.table.table-bordered
+        %tr
+          %th Name
+          %th Description
+        %tr
+          %td
+            %code :loaded
+          %td Fired when the <code>Lita::Robot</code> object has been initialized during start up. This can be used as a hook point for handlers to define routes that depend on user configuration not known until runtime, run migrations on data in Redis, or other start up tasks.
+        %tr
+          %td
+            %code :shut_down_started
+          %td Fired when the robot first begins shutting down.
+        %tr
+          %td
+            %code :shut_down_completed
+          %td Fired when the robot has finished shutting down both the built-in web server and the chat adapter.

@@ -1,0 +1,150 @@
+---
+title: "Plugin Authoring: Testing"
+---
+
+.container
+  .page-header
+    %h1 Plugin Authoring
+
+  .row
+    .col-md-3= partial "plugin-authoring/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Testing
+
+      %p It's a core philosophy of Lita that any plugins you write for your robot should be as thoroughly tested as any other program you would write. To make this easier, Lita ships with some handy extras for <a href="https://github.com/rspec/rspec">RSpec</a> that make testing a plugin dead simple. They require the full RSpec suite (rspec-core, rspec-expectations, and rspec-mocks) version 2.14 or higher, as they use the newer "expect" syntax.
+
+      %h3#testing-adapters Testing adapters
+
+      %p To include some helpful setup for testing Lita code, require "lita/rspec", then add <code>lita: true</code> to the metadata for an example group.
+
+      %pre
+        %code.ruby
+          :preserve
+            require "lita/rspec"
+
+            describe Lita::Adapters::MyAdapter, lita: true do
+              # ...
+            end
+
+      %p This will have the following effects:
+
+      %ul
+        %li All Redis interaction will be namespaced to a test environment and automatically cleared out before each example.
+        %li Lita's logger is stubbed to prevent log messages from cluttering up your test output.
+        %li Lita's configuration is cleared out before each example, so that the first call to <code>Lita.config</code> will start from the default configuration.
+
+      %h3#testing-handlers Testing handlers
+
+      %p To include Lita's RSpec extras for testing a handler, require "lita/rspec", then add <code>lita_handler: true</code> to the metadata for the example group.
+
+      %pre
+        %code.ruby
+          :preserve
+            require "lita/rspec"
+
+            describe Lita::Handlers::MyHandler, lita_handler: true do
+              # ...
+            end
+
+      %p This will have the following effects, in addition to the effects of the <code>lita: true</code> metadata hook:
+
+      %ul
+        %li <code>Lita.handlers</code> will return an array with only the class you're testing (<code>described_class</code>).
+        %li Strings sent with <code>Lita::Robot#send_messages</code> will be pushed to an array accessible as <code>replies</code> so you can make expectations about output from the robot.
+        %li
+          You have access to the following cached objects set with <code>let</code>:
+          %ul
+            %li <code>robot</code> – a <code>Lita::Robot</code>
+            %li <code>source</code> – a <code>Lita::Source</code>, the source of the incoming message
+            %li <code>user</code> – a <code>Lita::User</code>, the user who sent the message, attached to the source
+
+          %p Note that these objects are instances of the real classes and not test doubles.
+
+      %h4#testing-routes Testing routes
+
+      %p You can test routes (both chat and HTTP routes) and event subscriptions very easily using this syntax:
+
+      %pre
+        %code.ruby
+          :preserve
+            it { routes("some message").to(:some_method) }
+            it { routes_command("directed message").to(:some_command_method) }
+            it { doesnt_route("message").to(:some_command_method) }
+            it { routes_http(:get, "/foo/bar").to(:baz) }
+            it { doesnt_route_http(:post, "/foo/bar").to(:baz) }
+            it { routes_event(:connected).to(:greet) }
+            it { doesnt_route_event(:some_other_event).to(:greet) }
+
+      %table.table.table-bordered
+        %tr
+          %th Name
+          %th Description
+        %tr
+          %td
+            %code routes
+          %td Sets an expectation that the given string will trigger the given method when overheard by the robot.
+        %tr
+          %td
+            %code routes_command
+          %td Sets an expectation that the given string will trigger the given method when directed at the robot, either in a private message, or by prefixing a message in a chat room with the robot's mention name.
+        %tr
+          %td
+            %code doesnt_route
+          %td Sets an expectation that is the inverse of the one set by <code>routes</code>. Also aliased to <code>does_not_route</code>.
+        %tr
+          %td
+            %code doesnt_route_command
+          %td Sets an expectation that is the inverse of the one set by <code>routes_command</code>. Also aliased to <code>does_not_route_command</code>.
+        %tr
+          %td
+            %code routes_http
+          %td Sets an expectation that an HTTP request with the given HTTP method and path will route to the given handler method.
+        %tr
+          %td
+            %code doesnt_route_http
+          %td Sets an expectation that is the inverse of <code>routes_http</code>. Also aliased to <code>does_not_route_http</code>.
+        %tr
+          %td
+            %code routes_event
+          %td Sets an expectation that the given event will trigger the given subscribed method.
+        %tr
+          %td
+            %code doesnt_route_event
+          %td Sets an expectation that is the inverse of <code>routes_event</code>. Also aliased to <code>does_not_route_event</code>.
+
+      .alert.alert-warning
+        %strong Important!
+        These routing helpers bypass authorization for routes restricted to authorization groups.
+
+      .alert.alert-info As always, be careful when making negative message expectations, as a route might fail to match for a reason other than why you think. Positive message expectations are always preferred when possible.
+
+      %h4#testing-behavior Testing behavior
+
+      %p Since the behavioral logic in handlers are just regular instance methods, you can unit test them just as you would any other methods in a Ruby class. However, if you prefer more of an integration testing approach, there are some helper methods available to assist with this.
+
+      %p To send a message to the robot, use <code>send_message</code> and <code>send_command</code>. Then set expectations about the contents of the <code>replies</code> array.
+
+      %pre
+        %code.ruby
+          :preserve
+            it "lets everyone know when someone is happy" do
+              send_message("I'm happy!")
+              expect(replies.last).to eq("Hey, everyone! \#{user.name} is happy! Isn't that nice?")
+            end
+
+            it "greets anyone that says hi to it" do
+              send_command("hi")
+              expect(repliest.last).to eq("Hello, \#{user.name}!")
+            end
+
+      %p If you want to send a message or command from a user other than the default test user (which is set up for you with <code>let(:user)</code> automatically by <code>Lita::RSpec</code>), you can invoke either method with the <code>:as</code> option, supplying a <code>Lita::User</code> object.
+
+      %pre
+        %code.ruby
+          :preserve
+            it "lets everyone know that Carl is happy" do
+              carl = Lita::User.create(123, name: "Carl")
+              send_message("I'm happy!", as: carl)
+              expect(replies.last).to eq("Hey, everyone! Carl is happy! Isn't that nice?")
+            end
