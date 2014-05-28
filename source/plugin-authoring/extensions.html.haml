@@ -14,6 +14,11 @@ title: Plugin Authoring
 
       %p An extension is a plugin that adds new functionality to Lita's core in order to extend the capabilities of adapters and handlers. Unlike adapters and handlers, extensions are not used in a user's Lita project directly, but are dependencies of adapter and handler gems.
 
+      %p To create a new extension plugin, run the following command in your shell:
+
+      %pre
+        %code lita extension NAME-OF-YOUR-EXTENSION
+
       %h3#hooks Hooks
 
       %p Hooks are the primary mechanism for extensions to add new functionality to Lita's core. They are similar to the event system, allowing objects to register themselves with different hook names which get called when that hook is triggered. A callback object is registered using <code>Lita.register_hook</code>. The callback object is any object that responds to <code>:call</code> and accepts a single hash of payload data as an argument.

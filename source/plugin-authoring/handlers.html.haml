@@ -14,6 +14,11 @@ title: "Plugin Authoring: Handlers"
 
       %p A handler is a plugin that adds new functionality to Lita at runtime. It's a class that inherits from <code>Lita::Handler</code> and is registered with Lita. There are two primary components to a handler: route definitions, and the methods that implement those routes. There are both chat routes and HTTP routes. There's also an event subscription system available to all plugins (both handlers and adapters) which work similarly to the other kinds of routes.
 
+      %p To create a new handler plugin, run the following command in your shell:
+
+      %pre
+        %code lita handler NAME-OF-YOUR-HANDLER
+
       %h3#chat-routes Chat routes
 
       %p A chat route makes Lita listen for messages via chat. To define a chat route, use the class method <code>route</code>:

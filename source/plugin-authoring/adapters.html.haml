@@ -16,6 +16,11 @@ title: "Plugin Authoring: Adapters"
 
       %p It's important to note that each adapter should employ its own concurrency mechanism (threads, events, etc.) so that incoming messages can still be processed even while a handler is processing a previous message.
 
+      %p To create a new adapter plugin, run the following command in your shell:
+
+      %pre
+        %code lita adapter NAME-OF-YOUR-ADAPTER
+
       %h3#examples Examples
 
       %p Here is a bare bones example of an adapter for the fictitious chat service, FancyChat.
