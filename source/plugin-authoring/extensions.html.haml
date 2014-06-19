@@ -38,9 +38,10 @@ title: Plugin Authoring
               %li <code>:config_path</code> (String) - The file path to the Lita config file that will be loaded, or <code>nil</code> if there is no config file.
         %tr
           %td <code>:validate_route</code>
-          %td Called during incoming message dispatch. If the the callback object returns <code>true</code>, the message will continue to be checked for matching route conditions as usual. If the callback object returns <code>false</code>, the message immediately fails to match the route, and the dispatcher moves on to trying the next route.
+          %td Called at the end of incoming message dispatch checks. If the the callback object returns <code>true</code>, the message will be dispatched to the route. If the callback object returns <code>false</code>, the message will fail to match the route, and the dispatcher moves on to trying the next route.
           %td
             %ul
+              %li <code>:handler</code> (Lita::Handler) - The handler class the route belongs to.
               %li <code>:route</code> (Lita::Handler::Route) - The route object for the route currently being validated.
               %li <code>:message</code> (Lita::Message) - The incoming message.
               %li <code>:robot</code> (Lita::Robot) - The currently running robot.
