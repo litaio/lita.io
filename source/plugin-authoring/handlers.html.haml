@@ -142,7 +142,7 @@ title: "Plugin Authoring: Handlers"
             http.get "/greet_browser", :greet
 
             def greet(request, response)
-              response.body = "Hello, \#{request.user_agent}!"
+              response.body << "Hello, \#{request.user_agent}!"
             end
 
       %p The request object can be used to inspect the details of the incoming HTTP request and the response object is used to determine the status code, HTTP headers, and body that are ultimately returned to the user. <code>Lita::HTTPRoute</code> has methods for the following HTTP verbs, just like <code>get</code>, which is shown in the example above:
