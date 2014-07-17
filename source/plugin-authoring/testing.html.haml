@@ -135,7 +135,7 @@ title: "Plugin Authoring: Testing"
 
             it "greets anyone that says hi to it" do
               send_command("hi")
-              expect(repliest.last).to eq("Hello, \#{user.name}!")
+              expect(replies.last).to eq("Hello, \#{user.name}!")
             end
 
       %p If you want to send a message or command from a user other than the default test user (which is set up for you with <code>let(:user)</code> automatically by <code>Lita::RSpec</code>), you can invoke either method with the <code>:as</code> option, supplying a <code>Lita::User</code> object.
