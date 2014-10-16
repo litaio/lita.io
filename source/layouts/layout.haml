@@ -46,6 +46,13 @@
               %li= link_to 'Extensions', '/plugin-authoring/extensions/'
               %li= link_to 'Testing', '/plugin-authoring/testing/'
               %li= link_to 'Publishing', '/plugin-authoring/publishing/'
+          %li.dropdown
+            %a{ href: '/releases/' }
+              Releases
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to 'Lita 4', '/releases/4/'
+              %li= link_to 'Lita 3', '/releases/3/'
     .content
       = yield
     %footer
