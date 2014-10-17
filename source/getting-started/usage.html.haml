@@ -12,10 +12,7 @@ title: "Getting Started: Usage"
       .page-header.first-heading
         %h2 Usage
 
-      %p Once Lita is installed and configured, running it is simply a matter of running the shell command:
-
-      %pre
-        %code lita
+      %p Once Lita is installed and configured, running it is simply a matter of running the shell command: <kbd>lita</kbd>
 
       %h3#shell-adapter Shell adapter
 
@@ -31,7 +28,7 @@ title: "Getting Started: Usage"
           %th Default
         %tr
           %td
-            %code config.adapter.private_chat
+            %code config.adapters.shell.private_chat
           %td Boolean
           %td If true, all messages will be treated as though they were sent in a private chat, so they will be considered commands even when not prefixed with Lita's name.
           %td
@@ -75,7 +72,7 @@ title: "Getting Started: Usage"
         %code
           :preserve
             You: Lita info
-            Lita: Lita 3.0.0 - http://www.lita.io/
+            Lita: Lita 4.0.0 - http://www.lita.io/
 
       %p An HTTP route is also exposed, containing additional information.
 
@@ -87,7 +84,7 @@ title: "Getting Started: Usage"
             Content-Type: application/json
             Content-Length: 90
 
-            {"lita_version":"3.0.0","adapter":"shell","robot_name":"Lita","robot_mention_name":"Lita"}
+            {"adapter":"shell","lita_version":"4.0.0","redis_memory_usage":"982.38K","redis_version":"2.8.17","robot_mention_name":"Lita","robot_name":"Lita"}
 
       %h3#managing-rooms Managing rooms
 
