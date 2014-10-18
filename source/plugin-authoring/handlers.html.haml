@@ -12,12 +12,9 @@ title: "Plugin Authoring: Handlers"
       .page-header.first-heading
         %h2 Handlers
 
-      %p A handler is a plugin that adds new functionality to Lita at runtime. It's a class that inherits from <code>Lita::Handler</code> and is registered with Lita. There are two primary components to a handler: route definitions, and the methods that implement those routes. There are both chat routes and HTTP routes. There's also an event subscription system available to all plugins (both handlers and adapters) which work similarly to the other kinds of routes.
+      %p A handler is a plugin that adds new functionality to Lita at runtime. It's a class that inherits from <code>Lita::Handler</code> and is registered with Lita. A handler can also be created by passing a block to <code>Lita.register_handler</code>. There are two primary components to a handler: route definitions, and the methods that implement those routes. There are both chat routes and HTTP routes. There's also an event subscription system available to all plugins (both handlers and adapters) which work similarly to the other kinds of routes.
 
-      %p To create a new handler plugin, run the following command in your shell:
-
-      %pre
-        %code lita handler NAME-OF-YOUR-HANDLER
+      %p To create a new handler plugin, run the following command in your shell: <kbd>lita handler <var>NAME_OF_YOUR_HANDLER</var></kbd>
 
       %h3#chat-routes Chat routes
 
@@ -26,7 +23,7 @@ title: "Plugin Authoring: Handlers"
       %pre
         %code.ruby route /^echo\s+(.+)/, :echo
 
-      %p <code>route</code> takes a regular expression that will be used to determine whether or not an incoming message should trigger the route, and the name of the method that should be called when this route is triggered. Only two arguments are required, but <code>route</code> accepts a few additional options:
+      %p <code>route</code> takes a regular expression that will be used to determine whether or not an incoming message should trigger the route, and the name of the instance method that should be called when this route is triggered. Only two arguments are required, but <code>route</code> accepts a few additional options:
 
       %table.table.table-bordered
         %tr
@@ -37,7 +34,7 @@ title: "Plugin Authoring: Handlers"
         %tr
           %td
             %code :command
-          %td <code>TrueClass</code>, <code>FalseClass</code>
+          %td Boolean
           %td If set to true, the route will only trigger when "directed" at the robot. Directed means that it's sent via a private message, or the message is prefixed with the bot's name in some form (optionally prefixed with an @, and optionally followed by a colon or comma and white space). This prefix is stripped from the message body itself, but <code>Lita::Message#command?</code> available in handlers can be used if you need to determine whether or not a message was a command after it's been routed.
           %td
             %code false
@@ -68,9 +65,18 @@ title: "Plugin Authoring: Handlers"
 
       %p Routes will remember aribtrary key/value pairs that are not in the table above. Extra options are accessible by Lita extensions to add custom functionality to the routing system. (More on this later. See: <a href="#extensions">Extensions</a>.)
 
+      %p If you like, you can also declare a route without the second argument (the method name) and supply a block that will act as the body of the callback:
+
+      %pre
+        %code.ruby
+          :preserve
+            route /^echo\s+(.+)/ do |response|
+              # Callback code goes here
+            end
+
       %h4.spacer Callbacks
 
-      %p When a route is triggered, it invokes the instance method specified by the second argument to <code>route</code>. These methods take one argument, a <code>Lita::Response</code> object. <code>Lita::Response</code> is the primary interface for inspecting details about the incoming message and responding to it. It has the following useful methods:
+      %p When a route is triggered, it invokes the instance method specified by the second argument to <code>route</code> (or a block if an inline callback was provided). These methods take one argument, a <code>Lita::Response</code> object. <code>Lita::Response</code> is the primary interface for inspecting details about the incoming message and responding to it. It has the following useful methods:
 
       %table.table.table-bordered
         %tr
@@ -121,10 +127,10 @@ title: "Plugin Authoring: Handlers"
           %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string.
         %tr
           %td <code>config</code>
-          %td The handler's namespaced <code>Lita::Config</code> object, if it has any configuration of its own. This is a convenience method and is the same as calling `Lita.config.handlers.your_handler_namespace`.
+          %td The handler's namespaced configuration object. Equivalent to <code>Lita.config.handlers.your_handler_namespace</code>.
         %tr
           %td <code>log</code>
-          %td A convenience method for accessing the global logger object. Equivalent to `Lita.logger`.
+          %td A convenience method for accessing the global logger object. Equivalent to <code>Lita.logger</code>.
 
       %p If a handler method crashes, the backtrace will be output to Lita's log with the <code>:error</code> level, but it will not crash Lita itself.
 
@@ -132,9 +138,9 @@ title: "Plugin Authoring: Handlers"
 
       %p In addition to chat routes, handlers can also define HTTP routes for Lita's built-in web server. This is achieved with the class-level <code>http</code> method. <code>http</code> returns a <code>Lita::HTTPRoute</code> object, which, in turn, has methods to define routes for the most common HTTP methods.
 
-      %p In its simplest form, <code>Lita::HTTPRoute</code>'s methods take two arguments: the path for the route, and the name of the callback method in the handler that it will invoke.
+      %p In its simplest form, <code>Lita::HTTPRoute</code>'s methods take two arguments: the path for the route, and the name of the instance method in the handler that it will invoke when the route is triggered. The callback can also be supplied as a block instead of passing the name of a method as an argument.
 
-      %p The callback method takes two arguments: a <code>Rack::Request</code> and a <code>Rack::Response</code>. For example:
+      %p The callback method (or block) takes two arguments: a <code>Rack::Request</code> and a <code>Rack::Response</code>. For example:
 
       %pre
         %code.ruby
@@ -145,7 +151,16 @@ title: "Plugin Authoring: Handlers"
               response.body << "Hello, \#{request.user_agent}!"
             end
 
-      %p The request object can be used to inspect the details of the incoming HTTP request and the response object is used to determine the status code, HTTP headers, and body that are ultimately returned to the user. <code>Lita::HTTPRoute</code> has methods for the following HTTP verbs, just like <code>get</code>, which is shown in the example above:
+      %p The same behavior, but using a block:
+
+      %pre
+        %code.ruby
+          :preserve
+            http.get "/greet_browser" do |request, response|
+              response.body << "Hello, \#{request.user_agent}!"
+            end
+
+      %p The request object can be used to inspect the details of the incoming HTTP request and the response object is used to determine the status code, HTTP headers, and body that are ultimately returned to the user. <code>Lita::HTTPRoute</code> has methods for the following HTTP verbs, just like <code>get</code>, which is shown in the examples above:
 
       %ul
         %li <code>head</code>

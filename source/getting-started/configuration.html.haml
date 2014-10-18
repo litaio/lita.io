@@ -110,22 +110,21 @@ title: "Getting Started: Configuration"
         %tr
           %td
             %code config.http.port
-          %td
-            %code Integer
+          %td <code>Integer</code>, <code>String</code>
           %td The port Lita's web server will listen on.
           %td
             %code 8080
         %tr
           %td
             %code config.http.min_threads
-          %td <code>Integer</code>
+          %td <code>Integer</code>, <code>String</code>
           %td The minimum number of system threads Lita's web server will use.
           %td
             %code 0
         %tr
           %td
             %code config.http.max_threads
-          %td <code>Integer</code>
+          %td <code>Integer</code>, <code>String</code>
           %td The maximum number of system threads Lita's web server will use. The number will vary automatically based on load, but it will never go above this number.
           %td
             %code 16

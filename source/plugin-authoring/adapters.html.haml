@@ -12,16 +12,15 @@ title: "Plugin Authoring: Adapters"
       .page-header.first-heading
         %h2 Adapters
 
-      %p An adapter is a plugin that allows Lita to connect to a particular chat service. It's a class that inherits from <code>Lita::Adapter</code>, implements a set of required methods, and is registered with Lita. Though not necessary, it's convention for the class to be within the <code>Lita::Adapters</code> namespace.
+      %p An adapter is a plugin that allows Lita to connect to a particular chat service. It's a class that inherits from <code>Lita::Adapter</code>, implements a set of required methods, and is registered with Lita. Though not necessary, it's convention for the class to be within the <code>Lita::Adapters</code> namespace. Adapters can be defined explicitly as a class, or by passing a block to <code>Lita.register_adapter</code>.
 
       %p It's important to note that each adapter should employ its own concurrency mechanism (threads, events, etc.) so that incoming messages can still be processed even while a handler is processing a previous message.
 
-      %p To create a new adapter plugin, run the following command in your shell:
-
-      %pre
-        %code lita adapter NAME-OF-YOUR-ADAPTER
+      %p To create a new adapter plugin, run the following command in your shell: <kbd>lita adapter <var>NAME_OF_YOUR_ADAPTER</var></kbd>
 
       %h3#examples Examples
+
+      %h4 Class-based adapters
 
       %p Here is a bare bones example of an adapter for the fictitious chat service, FancyChat.
 
@@ -33,15 +32,16 @@ title: "Plugin Authoring: Adapters"
             module Lita
               module Adapters
                 class FancyChatAdapter < Adapter
-                  # Optional. Makes the bot produce an error message and quit upon start up
-                  # if `config.adapter.username` or `config.adapter.password` are not set.
-                  require_configs :username, :password
+                  # Defines two configuration attributes for the adapter. See the configuration page
+                  # of this guide for more details.
+                  config :username
+                  config :password
 
                   # Sets up the adapter and creates a new chat service client, using the
                   # fictitious `fancy_chat` gem.
                   def initialize(robot)
                     super
-                    @client = FancyChat.new(Lita.config.adapter.username, Lita.config.adapter.password)
+                    @client = FancyChat.new(robot.config.adapter.username, robot.config.adapter.password)
                   end
 
                   # Connects to the chat service and dispatches incoming messages to a
@@ -74,6 +74,25 @@ title: "Plugin Authoring: Adapters"
                 # `:fancy_chat`.
                 Lita.register_adapter(:fancy_chat, FancyChatAdapter)
               end
+            end
+
+      %h4 Block-based adapters
+
+      %p Adapters call also be created by passing a block to <code>Lita.register_adapter</code>:
+
+      %pre
+        %code.ruby
+          :preserve
+            Lita.register_adapter(:fancy_chat) do
+              config :username
+              config :password
+
+              def initialize(robot)
+                super
+                @client = FancyChat.new(robot.config.adapter.username, robot.config.adapter.password)
+              end
+
+              # etc...
             end
 
       %p For more detailed examples, check out the built in shell adapter, <a href="https://github.com/jimmycuadra/lita-hipchat">lita-hipchat</a>, or <a href="https://github.com/jimmycuadra/lita-irc">lita-irc</a>. Refer to the <a href="http://rdoc.info/gems/lita/frames">API documentation</a> for the exact API adapters must implement.
