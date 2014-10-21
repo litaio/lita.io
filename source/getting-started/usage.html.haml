@@ -73,6 +73,7 @@ title: "Getting Started: Usage"
           :preserve
             You: Lita info
             Lita: Lita 4.0.0 - http://www.lita.io/
+            Lita: Redis 2.8.12 - Memory used: 9.6M
 
       %p An HTTP route is also exposed, containing additional information.
 
@@ -104,7 +105,7 @@ title: "Getting Started: Usage"
 
       %p Handlers can restrict chat routes to certain users through the authorization groups feature. For example, certain commands in the <a href="https://github.com/jimmycuadra/lita-karma">karma</a> plugin require the user sending the message to be in the <code>:karma_admins</code> group.
 
-      %p Authorization groups can be arbitrarily named, and are created and destroyed automatically when members are added and removed from them. To manage authorization groups, a user must be specified as an administrator via the <code>config.robot.admins</code> configuration attribute.
+      %p Authorization groups can be arbitrarily named, and are created and destroyed automatically when members are added and removed. To manage authorization groups, a user must be specified as an administrator via the <code>config.robot.admins</code> configuration attribute.
 
       %p To add a user to a group:
 

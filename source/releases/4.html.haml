@@ -38,7 +38,7 @@ title: Lita 4.0
         %li
           %p
             %strong config.adapter
-          %p This attribute has been deprecated in favor of <code>config.adapters</code>, which has a separate attribute for each adapter by name, just as <code>config.handlers</code> does. At the time of Lita 4's release, all adapters will continue to read from the original <code>config.adapter</code> attribute, but once a version of the adapter you're using is released that uses the new system, you'll need to update your configuration accordingly.
+          %p This attribute has been deprecated in favor of <code>config.adapters</code>, which has a separate attribute for each adapter by name, just as <code>config.handlers</code> does. Existing versions of adapters will continue to read from the original <code>config.adapter</code> attribute, but once a version of the adapter you're using is released that uses the new system, you'll need to update your configuration accordingly.
           %p Example: Using the HipChat adapter, <code>config.adapter.jid = "12345_123456@chat.hipchat.com"</code> would become <code>config.adapters.hipchat.jid = "12345_123456@chat.hipchat.com"</code>.
         %li
           %p
@@ -71,7 +71,7 @@ title: Lita 4.0
         %li
           %p
             %strong Lita::Adapter.required_configs
-          %p This attribute returns an array of required configuration attributes as set with <code>require_config</code>. If for some reason you were accessing this, you'll want to use <code>configuration</code> instead, although that returns a <code>Lita::Configuration</code> object rather than an array of simple values.
+          %p This attribute returns an array of required configuration attributes as set with <code>require_config</code>. If for some reason you were accessing this, you'll want to use <code>configuration_builder</code> instead, although that returns a <code>Lita::ConfigurationBuilder</code> object rather than an array of simple values.
         %li
           %p
             %strong Lita.config.adapter
@@ -108,7 +108,7 @@ title: Lita 4.0
         %li
           %p
             %strong Lita::RSpec routing matchers
-          %p Lita 4's RSpec routing matchers use a new syntax that is more akin with RSpec style. Rather than enumerate each possible usage here, the following code block will demonstrate a few examples:
+          %p Lita 4's RSpec routing matchers use a new syntax that is more akin to RSpec style. Rather than enumerate each possible usage here, the following code block will demonstrate a few examples:
           %pre
             %code.ruby
               :preserve
@@ -151,7 +151,7 @@ title: Lita 4.0
 
       %ul
         %li Your code is using <code>Lita::Adapter.require_config</code>. Use <code>Lita::Adapter.config</code> instead.
-        %li Your code is stubbing one of the class methods on <code>Lita::Authorization</code>. If you're doing so that a test behaves as though a user is in a particular authorization group, you can use <code>robot.auth.add_user_to_group!(user, group)</code> instead. This new bang method does not require a "requesting user," making the programmatic management of authorization groups much simpler.
+        %li Your code is stubbing one of the class methods on <code>Lita::Authorization</code>. If you're doing that so that a test behaves as though a user is in a particular authorization group, you can use <code>robot.auth.add_user_to_group!(user, group)</code> instead. This new bang method does not require a "requesting user," making the programmatic management of authorization groups much simpler.
         %li
           %p Your code directly accesses or stubs class methods on the top-level Lita module. Most of the global state previously stored only on this object is now stored using a <code>Lita::Registry</code> object. Instead of resetting the state on the <code>Lita</code> module for each test, a fresh registry is used for each test. You can access the test's registry with the <code>registry</code> method from any test. Compatibility mode works by using the real <code>Lita</code> object instead of a fresh registry.
           %p Example: <code>Lita.register_handler(MyTestHandler)</code> should change to <code>registry.register_handler(MyTestHandler)</code>.
