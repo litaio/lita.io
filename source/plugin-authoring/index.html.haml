@@ -12,6 +12,16 @@ title: Plugin Authoring
       .page-header.first-heading
         %h2 Overview
 
-      %p Lita's plugin system is used to connect with different chat services and to add new runtime behavior. This guide provides details for plugin authors to create their own adapters, handlers,and extensions. If you're just learning about Lita, you may want to check out the <a href="/getting-started/">getting started</a> guide first.
+      %p Lita's plugin system is used to connect with different chat services and to add new runtime behavior. This guide provides details for programmers to create their own plugins. If you're just learning about Lita, you may want to check out the <a href="/getting-started/">getting started</a> guide first.
 
       %p Plugins are written in Ruby, so you'll need some familiarity with Ruby and its ecosystem of tools to write and publish a plugin. To test plugins, Lita provides some useful additions for the <a href="https://github.com/rspec/rspec">RSpec</a> testing framework. It's not necessary to use them, but familiarity with RSpec will be very beneficial in testing your plugins.
+
+      %h3#plugin-types Plugin types
+
+      %p Lita supports three types of plugins: adapters, handlers, and extensions. Some of Lita's features are shared between multiple types of plugins, but each type of plugin has its own special purpose.
+
+      %p <strong>Adapters</strong> are the glue between the core Lita framework and a specific chat service such as IRC, HipChat, or Slack. Adapters generally have a set of configuration attributes that the user will set with the details of their account information. Adapters also implement a set of abstract methods to satisfy the basic functionality Lita requires. This includes connecting to the service, sending and receiving messages, joining and parting from chat roms, setting chat room topics, and shutting down when Lita is asked to disconnect.
+
+      %p <strong>Handlers</strong> add new functionality that users will interface with at runtime. This includes chat routes (Lita's ability to reply to messages with certain patterns) and HTTP routes (for responding to HTTP requests to certain URLs). The behavior of both chat routes and HTTP routes can be arbitrarily complex. You're encouraged to write handlers to make Lita do things that are useful to you. Handlers provide methods to easily define and configure chat and HTTP routes, and various convenience methods for storing data, making HTTP requests, and sending messages back to users or chat rooms.
+
+      %p <strong>Extensions</strong> are a special type of plugin that provide new functionality for developing other plugins and extending the core Lita framework. Extensions achieve this by registering callbacks with various hooks exposed by Lita. Extensions are an advanced topic and in most cases you won't need to write one, though you may find extensions that provide features you'd like to use in your own plugins.
