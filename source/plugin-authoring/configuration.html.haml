@@ -1,0 +1,43 @@
+---
+title: "Plugin Authoring: Configuration"
+---
+
+.container
+  .page-header
+    %h1 Plugin Authoring
+
+  .row
+    .col-md-3= partial "plugin-authoring/menu"
+    .col-md-9
+      .page-header.first-heading
+        %h2 Configuration
+
+        %p intro paragraph
+
+        %table.table.table-bordered
+          %tr
+            %th Name
+            %th Type
+            %th Description
+          %tr
+            %td
+              %code :type
+            %td Any object
+            %td Specifies a requirement that the value provided by the user must be of the given data type. If it isn't, Lita will abort with an error message during start up.
+          %tr
+            %td
+              %code :types
+            %td
+              %code Array
+            %td The same as <code>:type</code>, but used to specify that the value can be any of the types in the array. <code>:type</code> and <code>:types</code> actually both accept either one type or an array of types, so use whichever option name you think reads better.
+          %tr
+            %td
+              %code :required
+            %td Boolean
+            %td Whether or not the attribute must be specified by the user. If a required attribute is not given a value, Lita will abort with an error message during start up.
+          %tr
+            %td
+              %code :default
+            %td Any object
+            %td The initial value of the attribute. If a value is not given using this option, the attribute's initial value will be <code>nil</code>.
+
