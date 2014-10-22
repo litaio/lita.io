@@ -27,7 +27,7 @@ title: "Plugin Authoring: Handlers"
       %p A chat route makes Lita listen for messages via chat. To define a chat route, use the class method <code>route</code>:
 
       %pre
-        %code.ruby route /^echo\s+(.+)/, :echo
+        %code.ruby route(/^echo\s+(.+)/, :echo)
 
       %p <code>route</code> takes a regular expression that will be used to determine whether or not an incoming message should trigger the route, and the name of the instance method that should be called when this route is triggered. Only two arguments are required, but <code>route</code> accepts a few additional options:
 
@@ -65,9 +65,9 @@ title: "Plugin Authoring: Handlers"
       %pre
         %code.ruby
           :preserve
-            route /^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
+            route(/^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
               "echo TEXT" => "Replies back with TEXT."
-            }
+            })
 
       %p Routes will remember aribtrary key/value pairs that are not in the table above. Extra options are accessible by Lita extensions to add custom functionality to the routing system. (More on this later. See: <a href="#extensions">Extensions</a>.)
 
@@ -76,7 +76,7 @@ title: "Plugin Authoring: Handlers"
       %pre
         %code.ruby
           :preserve
-            route /^echo\s+(.+)/ do |response|
+            route(/^echo\s+(.+)/) do |response|
               # Callback code goes here
             end
 
@@ -115,35 +115,7 @@ title: "Plugin Authoring: Handlers"
           %td <code>extensions</code>
           %td A hash of arbitrary data that can be populated by Lita extensions for custom functionality. (More on this later. See: <a href="#extensions">Extensions</a>.)
 
-      %p Additionally, handlers have access to the following helper instance methods:
-
-      %table.table.table-bordered
-        %tr
-          %th Name
-          %th Description
-        %tr
-          %td <code>robot</code>
-          %td Direct access to the currently running <code>Lita::Robot</code> object.
-        %tr
-          %td <code>redis</code>
-          %td A <code>Redis::Namespace</code> object which provides each handler with its own isolated Redis store, suitable for many data persistence and manipulation tasks.
-        %tr
-          %td <code>http</code>
-          %td A <code>Faraday::Connection</code> object for making HTTP requests. Takes an optional hash of options and optional block which are passed on to <a href="https://github.com/lostisland/faraday">Faraday</a>.
-        %tr
-          %td <code>translate</code> (aliased to <code>t</code>)
-          %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string. The same method is available at the class level as well.
-        %tr
-          %td <code>after</code>, <code>every</code>
-          %td Execute code after a delay or at repeated intervals. More on this below.
-        %tr
-          %td <code>config</code>
-          %td The handler's namespaced configuration object. Equivalent to <code>Lita.config.handlers.your_handler_namespace</code>.
-        %tr
-          %td <code>log</code>
-          %td A convenience method for accessing the global logger object. Equivalent to <code>Lita.logger</code>.
-
-      %p If a handler method crashes, the backtrace will be output to Lita's log with the <code>:error</code> level, but it will not crash Lita itself.
+      %p If a callback method crashes, the backtrace will be output to Lita's log with the <code>:error</code> level, but it will not crash Lita itself.
 
       %h3#http-routes HTTP routes
 
@@ -234,6 +206,36 @@ title: "Plugin Authoring: Handlers"
 
       %p This would match a request like <code>GET /hello/dark/cruel/world</code>, and write <code>dark, cruel</code> to the response.
 
+      %h3#helper-methods Helper methods
+
+      %p Routing callbacks of all types have access to the following helper instance methods:
+
+      %table.table.table-bordered
+        %tr
+          %th Name
+          %th Description
+        %tr
+          %td <code>robot</code>
+          %td Direct access to the currently running <code>Lita::Robot</code> object.
+        %tr
+          %td <code>redis</code>
+          %td A <code>Redis::Namespace</code> object which provides each handler with its own isolated Redis store, suitable for many data persistence and manipulation tasks.
+        %tr
+          %td <code>http</code>
+          %td A <code>Faraday::Connection</code> object for making HTTP requests. Takes an optional hash of options and optional block which are passed on to <a href="https://github.com/lostisland/faraday">Faraday</a>.
+        %tr
+          %td <code>translate</code> (aliased to <code>t</code>)
+          %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string. The same method is available at the class level as well.
+        %tr
+          %td <code>after</code>, <code>every</code>
+          %td Execute code after a delay or at repeated intervals. More on this below.
+        %tr
+          %td <code>config</code>
+          %td The handler's namespaced configuration object. Equivalent to <code>Lita.config.handlers.your_handler_namespace</code>.
+        %tr
+          %td <code>log</code>
+          %td A convenience method for accessing the global logger object. Equivalent to <code>Lita.logger</code>.
+
       %h3#timers Timers
 
       %p Handlers can execute blocks of code after a delay, or repeatedly at intervals by using timers. The handler methods <code>after</code> and <code>every</code> perform these two tasks, respectively. Each method takes a number of seconds to wait, and a block to execute after the time has elapsed. They each yield a <code>Lita::Timer</code> object to the block. For recurring timers created with <code>every</code>, you should call <code>stop</code> on the timer object when it reaches a terminating condition, or it will continue forever until Lita is stopped.
@@ -260,26 +262,28 @@ title: "Plugin Authoring: Handlers"
 
       %h3#configuration Configuration
 
-      %p If you want your handler to expose config settings to the user, use the class-level <code>default_config</code> method. This method accepts a single config object as an argument, which will be exposed to the user as <code>Lita.config.handlers.your_handler_namespace</code>. Use the <code>default_config</code> method to set up any default values you want for your handler's configuration attributes.
+      %p Often handlers will require some sort of configuration by the user in order to work. For example, the handler might need the user's API key for an external web service. To specify configuration attributes, use the class-level <code>config</code> method:
 
       %pre
         %code.ruby
           :preserve
             module Lita
               module Handlers
-                class HandlerWithConfig < Handler
-                  def self.default_config(config)
-                    config.enabled = true
+                class HandlerWithConfig &lt; Handler
+                  config :api_key
+
+                  route(/call api/, command: true) do |response|
+                    response.reply(ThirdPartyAPI.new(config.api_key).call)
                   end
                 end
+
+                Lita.register_handler(HandlerWithConfig)
               end
             end
 
-            Lita.config.handlers.handler_with_config.enabled # => true
+      %p This would expose the configuration attribute at <code>Lita.config.handlers.handler_with_config.api_key</code> and users can set a value for it in their <code>lita_config.rb</code> file. The handler can then use the value the user sets by calling <code>config.api_key</code> in any instance method. The <code>config</code> instance method is a convenience accessor equivalent to <code>robot.config.handlers.your_handler_name</code>.
 
-      .alert.alert-warning
-        %strong Important!
-        All the values in <code>Lita.config</code> are frozen at runtime. Consider them read only outside of the <code>default_config</code> method.
+      %p The <code>config</code> class method, shown in the code example above, takes the name of the attribute to create as a Ruby symbol, with a few optional parameters. For full details on using the <code>config</code> method, take a look at the <a href="/plugin-authoring/configuration/">configuration</a> page.
 
       %h3#examples Examples
 
@@ -290,16 +294,14 @@ title: "Plugin Authoring: Handlers"
           :preserve
             module Lita
               module Handlers
-                class Echo < Handler
-                  route /^echo\s+(.+)/, :echo, help: { "echo TEXT" => "Echoes back TEXT." }
+                class Echo &lt; Handler
+                  route(/^echo\s+(.+)/, :echo, help: { "echo TEXT" => "Echoes back TEXT." })
 
                   def echo(response)
                     response.reply(response.matches)
                   end
                 end
 
-                # Adds the handler to Lita's handler registry. Users can now use the
-                # handler simply by requiring it.
                 Lita.register_handler(Echo)
               end
             end
@@ -311,10 +313,10 @@ title: "Plugin Authoring: Handlers"
           :preserve
             module Lita
               module Handlers
-                class Representative < Handler
-                  route /representative\s+(\d{5})/, :lookup, command: true, help: {
+                class Representative &lt; Handler
+                  route(/representative\s+(\d{5})/, :lookup, command: true, help: {
                     "representative ZIP_CODE" => "Looks up your U.S. congressional representative by zip code."
-                  }
+                  })
 
                   def lookup(response)
                     zip = response.matches[0][0]
@@ -341,5 +343,9 @@ title: "Plugin Authoring: Handlers"
                 Lita.register_handler(Representative)
               end
             end
+
+      .alert.alert-info
+        %strong Note:
+        The <a href="https://github.com/intridea/multi_json">MultiJson</a> library is bundled along with Lita. You should use it for parsing and generating JSON in your plugins.
 
       %p For more detailed examples, check out the built in authorization, help, and web handlers, or any of the many existing handler plugins on the <a href="https://www.lita.io/plugins">plugins</a> page. Refer to the <a href="http://rdoc.info/gems/lita/frames">API documentation</a> for exact specifications for handlers' methods.

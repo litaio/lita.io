@@ -27,18 +27,18 @@ title: "Plugin Authoring: Localization"
       %pre
         %code.ruby
           :preserve
-            route /^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
+            route(/^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
               "echo TEXT" => "Replies back with TEXT."
-            }
+            })
 
       %p An internationalized version of this would look like this:
 
       %pre
         %code.ruby
           :preserve
-            route /^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
+            route(/^echo\s+(.+)/, :echo, command: true, restrict_to: [:testers, :committers], help: {
               t("help.echo_key") => t("help.echo_value")
-            }
+            })
 
       %p With <code>en.yml</code> filled in accordingly:
 

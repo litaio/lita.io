@@ -84,7 +84,7 @@ title: Plugin Authoring
       %pre
         %code.ruby
           :preserve
-            route /^dangerous/i, :dangerous_action, command: true, password_protected: true
+            route(/^dangerous/i, :dangerous_action, command: true, password_protected: true)
 
       %p Here is an extension that adds the SHA1 hex digest of the incoming message's body to the response object passed to the handler:
 
@@ -112,7 +112,7 @@ title: Plugin Authoring
       %pre
         %code.ruby
           :preserve
-            route /^sha/i, :sha, command: true
+            route(/^sha/i, :sha, command: true)
 
             def sha(response)
               response.reply("The SHA1 of your message is: \#{response.extensions[:sha]}.")

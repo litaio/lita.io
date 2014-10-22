@@ -41,3 +41,7 @@ title: "Plugin Authoring: Configuration"
             %td Any object
             %td The initial value of the attribute. If a value is not given using this option, the attribute's initial value will be <code>nil</code>.
 
+      .alert.alert-warning
+        %strong Important!
+        All the values in <code>Lita.config</code> are frozen at runtime. Consider them read only outside of the <code>default_config</code> method.
+

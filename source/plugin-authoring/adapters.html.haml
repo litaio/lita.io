@@ -63,7 +63,7 @@ title: "Plugin Authoring: Adapters"
 
       %p In some cases, some of these methods may not be applicable to a particular chat service, in which case you can just leave them unimplemented, and plugins that call them will simply cause a warning to Lita's log saying the adapter doesn't implement the method.
 
-      %h4 run and shut_down
+      %h4.spacer run and shut_down
 
       %p <code>run</code> is the most important method. This is what gets called by Lita when starting up and must establish a connection with the chat service and begin listening for incoming messages. The mechanism by which you do this is entirely up to you, but it's important that you implement some concurrency mechanism (threads, EventMachine, Celluloid, etc.) so that incoming messages can still be processed even while a previous message is still being processed. The <code>run</code> method itself should block, since Lita itself doesn't do anything to keep the robot running.
 
@@ -125,7 +125,7 @@ title: "Plugin Authoring: Adapters"
 
       %p <code>shut_down</code> is called automatically when the Lita process is killed. Use it to perform any last minute clean up that might be necessary. In this case, we just call the Fancychat client library's <code>disconnect</code> method for a clean shut down. In many cases, the body of the <code>shut_down</code> method can be empty, because no clean up is required.
 
-      %h4 Other methods
+      %h4.spacer Other methods
 
       %p The other methods adapters implement are generally not as complicated as the <code>run</code> method. The most important remaining method is <code>send_messages</code>, which is the interface other plugins use to send messages out from Lita back to users and chat rooms.
 
