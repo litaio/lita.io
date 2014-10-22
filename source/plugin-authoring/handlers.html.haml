@@ -206,9 +206,40 @@ title: "Plugin Authoring: Handlers"
 
       %p This would match a request like <code>GET /hello/dark/cruel/world</code>, and write <code>dark, cruel</code> to the response.
 
+      %h3#event-routes Event routes
+
+      %p Handlers can communicate with each other or respond to arbitrary system events with the built-in pub-sub event system. Subscribe to an event by name, and provide the name of the instance method that should be invoked when the event triggers. Event callback methods are passed a payload hash with any arbitrary data the caller chooses to provide.
+
+      %pre
+        %code.ruby
+          :preserve
+            on :connected, :greet
+
+            def greet(payload)
+              target = Source.new(room: payload[:room])
+              robot.send_message(target, "Hello \#{payload[:room]}!")
+            end
+
+      %p As with the other types of routes, you can also provide the callback inline with a block:
+
+      %pre
+        %code.ruby
+          :preserve
+            on(:connected) do |payload|
+              target = Source.new(room: payload[:room])
+              robot.send_message(target, "Hello \#{payload[:room]}!")
+            end
+
+      %p To trigger an event for other code to intercept, call the robot's <code>trigger</code> method and pass it any payload data you want subscribers to receive:
+
+      %pre
+        %code.ruby robot.trigger(:connected, room: "#litabot")
+
+      %p Most adapters will trigger a <code>:connected</code> event when the robot has started and a connection has been established to the chat service. You can use this event to define routes that require configuration that is not known until runtime.
+
       %h3#helper-methods Helper methods
 
-      %p Routing callbacks of all types have access to the following helper instance methods:
+      %p Route callbacks of all types have access to the following helper instance methods:
 
       %table.table.table-bordered
         %tr
