@@ -14,10 +14,11 @@ title: Plugin Authoring
 
       %p An extension is a plugin that adds new functionality to Lita's core in order to extend the capabilities of adapters and handlers. Unlike adapters and handlers, extensions are not used in a user's Lita project directly, but are dependencies of adapter and handler gems.
 
-      %p To create a new extension plugin, run the following command in your shell:
+      %p To create a new extension plugin, run the following command in your shell: <kbd>lita extension <var>NAME_OF_YOUR_EXTENSION</var></kbd>. This generates the files necessary to build an extension plugin and publish it as a Ruby gem.
 
-      %pre
-        %code lita extension NAME-OF-YOUR-EXTENSION
+      .alert.alert-info
+        %strong Note:
+        Extensions are an advanced topic and most of the time you won't need to write them yourself.
 
       %h3#hooks Hooks
 
