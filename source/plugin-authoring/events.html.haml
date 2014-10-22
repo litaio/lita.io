@@ -12,28 +12,18 @@ title: "Plugin Authoring: Events"
       .page-header.first-heading
         %h2 Events
 
-      %p Handlers can communicate with each other or respond to arbitrary system events with the built-in pub-sub event system. Subscribe to an event by name, and provide the name of the instance method that should be invoked when the event triggers. Event callback methods are passed a payload hash with any arbitrary data the caller chooses to provide.
+      %p The <code>Lita::Robot</code> object serves as a global event bus in Lita's runtime. Any Lita code can trigger an event on the robot, and handler plugins can define event callbacks which subscribe to those events by name. When an event is triggered, the calling code can pass a payload hash with any arbitrary data it wishes the receiving code to have.
+
+      %p To trigger an event from any Lita code with access to the currently running robot:
 
       %pre
-        %code.ruby
-          :preserve
-            on :connected, :greet
+        %code.ruby robot.trigger(:some_event_happened, foo: :bar, baz: :blah)
 
-            def greet(payload)
-              target = Source.new(room: payload[:room])
-              robot.send_message(target, "Hello \#{payload[:room]}!")
-            end
-
-      %p Trigger an event from anywhere and pass any payload data you want the subscribed handlers to receive:
-
-      %pre
-        %code.ruby robot.trigger(:connected, room: "#litabot")
-
-      %p Since the <code>trigger</code> method is available on <code>Lita::Robot</code>, it can be used from anywhere in the Lita runtime (both adapters and handlers). This is useful in adapters to signal handlers about events such as server connection and channel joins.
+      %p See the <a href="/plugin-authoring/handlers/#event-routes">handlers guide</a> for details on how handlers can subscribe to events.
 
       %h3#built-in-events Built-in events
 
-      %p Lita has a few built-in events:
+      %p There are a few events which the core Lita framework triggers:
 
       %table.table.table-bordered
         %tr
@@ -51,3 +41,5 @@ title: "Plugin Authoring: Events"
           %td
             %code :shut_down_completed
           %td Fired when the robot has finished shutting down both the built-in web server and the chat adapter.
+
+      %p Adapters are encouraged to trigger a <code>:connected</code> event so that other plugins can run set up code that needs to be done at runtime.
