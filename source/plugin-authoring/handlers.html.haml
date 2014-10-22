@@ -237,6 +237,28 @@ title: "Plugin Authoring: Handlers"
 
       %p Most adapters will trigger a <code>:connected</code> event when the robot has started and a connection has been established to the chat service. You can use this event to define routes that require configuration that is not known until runtime.
 
+      %h3#mixins Mixins
+
+      %p Since handler plugins can end up performing a lot of essentially unrelated functions, you may want to split different types of behavior into different classes that only have one type of route in them. You may also want to use inheritance for your own purposes and prefer not to inherit from <code>Lita::Handler</code>. In this case, you can simply extend your class with the appropriate module(s):
+
+      %ul
+        %li <code>Lita::Handler::ChatRouter</code> for chat routes.
+        %li <code>Lita::Handler::HTTPRouter</code> for HTTP routes.
+        %li <code>Lita::Handler::EventRouter</code> for event routes.
+
+      %p In fact, <code>Lita::Handler</code> is simply an empty class that is extended with all three:
+
+      %pre
+        %code.ruby
+          :preserve
+            module Lita
+              class Handler
+                extend ChatRouter
+                extend HTTPRouter
+                extend EventRouter
+              end
+            end
+
       %h3#helper-methods Helper methods
 
       %p Route callbacks of all types have access to the following helper instance methods:
@@ -262,7 +284,7 @@ title: "Plugin Authoring: Handlers"
           %td Execute code after a delay or at repeated intervals. More on this below.
         %tr
           %td <code>config</code>
-          %td The handler's namespaced configuration object. Equivalent to <code>Lita.config.handlers.your_handler_namespace</code>.
+          %td The handler's namespaced configuration object. Equivalent to <code>robot.config.handlers.your_handler_namespace</code>.
         %tr
           %td <code>log</code>
           %td A convenience method for accessing the global logger object. Equivalent to <code>Lita.logger</code>.
