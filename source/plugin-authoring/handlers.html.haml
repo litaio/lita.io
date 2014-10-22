@@ -272,7 +272,7 @@ title: "Plugin Authoring: Handlers"
           %td Direct access to the currently running <code>Lita::Robot</code> object.
         %tr
           %td <code>redis</code>
-          %td A <code>Redis::Namespace</code> object which provides each handler with its own isolated Redis store, suitable for many data persistence and manipulation tasks.
+          %td A <code>Redis::Namespace</code> object which provides each handler with its own isolated Redis store, suitable for many data persistence and manipulation tasks. The Redis namespace defaults to a snake-cased version of the handler's class name. You can set it manually with the class-level <code>namespace</code> method.
         %tr
           %td <code>http</code>
           %td A <code>Faraday::Connection</code> object for making HTTP requests. Takes an optional hash of options and optional block which are passed on to <a href="https://github.com/lostisland/faraday">Faraday</a>.
