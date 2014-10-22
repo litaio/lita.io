@@ -22,7 +22,7 @@ title: "Plugin Authoring: Localization"
                 handlers:
                   your_handler_name:
 
-      %p Language strings should be inserted as key/value pairs under your Handler's namespace in the YAML file. These keys can then be translated at runtime by using the <code>translate</code> method (aliased to <code>t</code>) available at both the class and instance level inside your plugin. If we take a look at the route example from before:
+      %p If your plugin is an adapter or extension, it will instead be under the <code>adapters</code> or <code>extensions</code>namespace, respectively. Language strings should be inserted as key/value pairs under your plugin's namespace in the YAML file. These keys can then be translated at runtime by using the <code>translate</code> method (aliased to <code>t</code>) available at both the class and instance level inside your adapter or handler. If we take a look at the route example from before:
 
       %pre
         %code.ruby
