@@ -12,9 +12,15 @@ title: "Plugin Authoring: Handlers"
       .page-header.first-heading
         %h2 Handlers
 
-      %p A handler is a plugin that adds new functionality to Lita at runtime. It's a class that inherits from <code>Lita::Handler</code> and is registered with Lita. A handler can also be created by passing a block to <code>Lita.register_handler</code>. There are two primary components to a handler: route definitions, and the methods that implement those routes. There are both chat routes and HTTP routes. There's also an event subscription system available to all plugins (both handlers and adapters) which work similarly to the other kinds of routes.
+      %p A handler is a plugin that adds new functionality to Lita at runtime. It's a class that inherits from <code>Lita::Handler</code>. There are two primary components to a handler: route definitions, and the route callbacks. There are both chat routes and HTTP routes. There's also an event subscription system available to plugins of all types which work similarly to the other kinds of routes.
 
-      %p To create a new handler plugin, run the following command in your shell: <kbd>lita handler <var>NAME_OF_YOUR_HANDLER</var></kbd>
+      %p To create a new handler plugin, generate the initial files by running the following command in your shell: <kbd>lita handler <var>NAME_OF_YOUR_HANDLER</var></kbd> For example, <kbd>lita handler lita-guide-examples</kbd>. You don't need to specify the conventional "lita-" prefix in the name. Lita will add it for you if it's missing.
+
+      %p Using the example command above, the generator creates a new directory called <code>lita-guide-examples</code> with all the files required for a Ruby gem. The handler class will be defined in the file <code>lib/lita/handlers/guide_examples.rb</code> and within the <code>Lita::Handlers</code> namespace. It's convention for Lita handlers to be in this namespace, but it's not strictly necessary. Any class in any location can serve as an handler. Notice that the handler is a class that inherits from <code>Lita::Handler</code> and that the handler is registered with Lita using the call <code>Lita.register_handler(GuideExamples)</code>. This adds it to Lita's plugin registry, so that any Lita instance which includes your plugin in its Gemfile will automatically load it.
+
+      %p The generator also creates a test file for the handler at <code>spec/lita/handlers/guide_examples_spec.rb</code>. Testing is covered later in the guide.
+
+      %p With the plugin files generated, it's time to start adding some routes!
 
       %h3#chat-routes Chat routes
 
@@ -74,6 +80,8 @@ title: "Plugin Authoring: Handlers"
               # Callback code goes here
             end
 
+      %p Providing the callback inline using a block is primarily a stylistic choice. Using a named instance method  and providing a block both do the same thing. One advantage of separating the route definitions from their callbacks is that multiple routes can share the same callback. Another is that it's easy to look at all of a handler's route definitions to get an idea of what messages it responds to without getting bogged down in the details of their callbacks. Finally, if you use a named instance method, you can unit test the callback independently from the routing system. Lita includes testing tools to make testing chat routes easy, in either case. More on this later.
+
       %h4.spacer Callbacks
 
       %p When a route is triggered, it invokes the instance method specified by the second argument to <code>route</code> (or a block if an inline callback was provided). These methods take one argument, a <code>Lita::Response</code> object. <code>Lita::Response</code> is the primary interface for inspecting details about the incoming message and responding to it. It has the following useful methods:
@@ -87,7 +95,7 @@ title: "Plugin Authoring: Handlers"
           %td Sends one or more string messages back to the source of the original message, either a private message or a chat room.
         %tr
           %td <code>reply_privately</code>
-          %td Sends one or more string messages back to the user who sent the original message, whether it initated in a private message or a chat room.
+          %td Sends one or more string messages back to the user who sent the original message, whether it was initated in a private message or a chat room.
         %tr
           %td <code>matches</code>
           %td An array of regular expression matches obtained via <code>String#scan</code>.
@@ -107,7 +115,7 @@ title: "Plugin Authoring: Handlers"
           %td <code>extensions</code>
           %td A hash of arbitrary data that can be populated by Lita extensions for custom functionality. (More on this later. See: <a href="#extensions">Extensions</a>.)
 
-      %p Additionally, handlers have access to the following instance methods:
+      %p Additionally, handlers have access to the following helper instance methods:
 
       %table.table.table-bordered
         %tr
@@ -124,7 +132,10 @@ title: "Plugin Authoring: Handlers"
           %td A <code>Faraday::Connection</code> object for making HTTP requests. Takes an optional hash of options and optional block which are passed on to <a href="https://github.com/lostisland/faraday">Faraday</a>.
         %tr
           %td <code>translate</code> (aliased to <code>t</code>)
-          %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string.
+          %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string. The same method is available at the class level as well.
+        %tr
+          %td <code>after</code>, <code>every</code>
+          %td Execute code after a delay or at repeated intervals. More on this below.
         %tr
           %td <code>config</code>
           %td The handler's namespaced configuration object. Equivalent to <code>Lita.config.handlers.your_handler_namespace</code>.
@@ -160,6 +171,8 @@ title: "Plugin Authoring: Handlers"
               response.body &lt;&lt; "Hello, \#{request.user_agent}!"
             end
 
+      %p As with chat routes, the choice between a named instance method and a block for callbacks is mostly a stylistic one, though the former may carry more advantages.
+
       %p The request object can be used to inspect the details of the incoming HTTP request and the response object is used to determine the status code, HTTP headers, and body that are ultimately returned to the user. <code>Lita::HTTPRoute</code> has methods for the following HTTP verbs, just like <code>get</code>, which is shown in the examples above:
 
       %ul
@@ -173,7 +186,7 @@ title: "Plugin Authoring: Handlers"
         %li <code>link</code>
         %li <code>unlink</code>
 
-      %h4.spaced Advanced routing
+      %h4.spacer Advanced routing
 
       %p Lita's HTTP router has the ability to define paths with variable segments, if you should need them. A variable segment is denoted by prefixing a word with a colon. The "symbol" will accept any characters in its place, and will assign the actual value to a parameter with the symbol's name in the Rack environment. To illustrate:
 

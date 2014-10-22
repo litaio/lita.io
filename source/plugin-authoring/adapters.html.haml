@@ -18,9 +18,9 @@ title: "Plugin Authoring: Adapters"
 
       %p Start by generating the files for a new plugin by running <kbd>lita adapter <var>NAME_OF_YOUR_ADAPTER</var></kbd>. In this case, the name would be <kbd>fancychat</kbd>. You can type either <kbd>fancychat</kbd> or <kbd>lita-fancychat</kbd>. If you leave off the prefix, Lita will add it for you.
 
-      %p The generator command creates a new directory called <code>lita-fancychat</code> with all the files required for a Ruby gem. The adapter class will be defined in the file <code>lib/lita/handlers/fancychat.rb</code> and within the <code>Lita::Handlers</code> namespace. It's convention for Lita adapters to be in this namespace, but it's not strictly necessary. Any class in any location can serve as an adapter. Notice that the adapter is a class that inherits from <code>Lita::Adapter</code> and that the adapter is registered with Lita using the call <code>Lita.register_adapter(:fancychat, FancyChat)</code>. The first argument is a Ruby symbol which people will use to configure their Lita instances to use your adapter.
+      %p The generator command creates a new directory called <code>lita-fancychat</code> with all the files required for a Ruby gem. The adapter class will be defined in the file <code>lib/lita/adapters/fancychat.rb</code> and within the <code>Lita::Adapters</code> namespace. It's convention for Lita adapters to be in this namespace, but it's not strictly necessary. Any class in any location can serve as an adapter. Notice that the adapter is a class that inherits from <code>Lita::Adapter</code> and that the adapter is registered with Lita using the call <code>Lita.register_adapter(:fancychat, FancyChat)</code>. The first argument is a Ruby symbol which people will use to configure their Lita instances to use your adapter.
 
-      %p The generator also creates a test file for the adapter at <code>spec/lita/handlers/fancychat_spec.rb</code>. Testing is covered later in the guide.
+      %p The generator also creates a test file for the adapter at <code>spec/lita/adapters/fancychat_spec.rb</code>. Testing is covered later in the guide.
 
       %p From here on out, it's your job to implement the required methods to make the adapter function!
 
@@ -225,6 +225,10 @@ title: "Plugin Authoring: Adapters"
                 Lita.register_adapter(:fancychat, Fancychat)
               end
             end
+
+      %h3#helper-methods Helper methods
+
+      %p TODO: Document all the instance methods available to the adapter class.
 
       %h3#block-syntax Block syntax
 
