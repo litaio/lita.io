@@ -1,4 +1,9 @@
 %nav
   %ul.nav.nav-stacked
-    %li= link_to 'Lita 4', '/releases/4/'
+    %li
+      = link_to 'Lita 4', '/releases/4/'
+      %ul
+        %li= link_to 'Feature overview', '/releases/4/#feature-overview'
+        %li= link_to 'Upgrading for users', '/releases/4/#upgrading-for-users'
+        %li= link_to 'Upgrading for developers', '/releases/4/#upgrading-for-developers'
     %li= link_to 'Lita 3', '/releases/3/'

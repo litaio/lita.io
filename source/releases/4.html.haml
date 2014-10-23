@@ -14,7 +14,7 @@ title: Lita 4.0
 
       %p Version 4.0 of Lita, the Ruby chat bot framework, has been released. It contains several new features and improvements for both users and plugin developers. If you're brand new to Lita, you can install it by running <code>gem install lita</code> and learn to use it on the <a href="/getting-started/">getting started</a> page. Otherwise, read on for all the changes in the latest version.
 
-      %h3 Feature overview
+      %h3#feature-overview Feature overview
 
       %ul
         %li New configuration system with support for data type validation, custom validations, and nested attributes.
@@ -32,7 +32,7 @@ title: Lita 4.0
 
       %p The guides on the documentation site have also been greatly improved.
 
-      %h3 Upgrading for Lita users
+      %h3#upgrading-for-users Upgrading for Lita users
 
       %p Lita 4 is completely backwards compatible for users. All existing functionality and plugins will continue to work. However, Lita 4 introduces a new configuration system, and a few things will need to change in your <code>lita_config.rb</code> file as the plugins you use begin to take advantage of features from Lita 4. Most configuration will remain unchanged, but a couple of attributes will emit deprecation warnings until they are updated to be compatible with the new style. These attributes are:
 
@@ -50,7 +50,7 @@ title: Lita 4.0
 
       %p In addition to these configuration changes, Lita's built-in daemonization feature has been deprecated without replacement. Instead, daemonization of your Lita process should be done using dedicated process management tools for your operating system. Popular choices are <a href="http://www.freedesktop.org/wiki/Software/systemd/">systemd</a>, <a href="http://upstart.ubuntu.com/">Upstart</a>, and <a href="http://smarden.org/runit/">runit</a>. Lita's built-in daemonization will be removed completely in Lita 5. For more detail on the reasons behind this change, Mike Perham's <a href="http://www.mikeperham.com/2014/09/22/dont-daemonize-your-daemons/">Don't Daemonize Your Daemons!</a> is good reading.
 
-      %h3 Upgrading for plugin developers
+      %h3#upgrading-for-developers Upgrading for plugin developers
 
       %p In accordance with Lita's <a href="/getting-started/versioning-policy/">versioning policy</a>, Lita 4's only breaking change is the removal of one API that was already deprecated in Lita 3:
 
