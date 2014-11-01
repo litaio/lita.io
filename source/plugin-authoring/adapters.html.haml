@@ -228,7 +228,24 @@ title: "Plugin Authoring: Adapters"
 
       %h3#helper-methods Helper methods
 
-      %p TODO: Document all the instance methods available to the adapter class.
+      %p Adapters have access to the following helper instance methods:
+
+      %table.table.table-bordered
+        %tr
+          %th Name
+          %th Description
+        %tr
+          %td <code>robot</code>
+          %td Direct access to the currently running <code>Lita::Robot</code> object.
+        %tr
+          %td <code>translate</code> (aliased to <code>t</code>)
+          %td A convenience method for easily localizing text. Takes the string key of the translation, and an optional hash of values to interpolate into the translated string. The same method is available at the class level as well.
+        %tr
+          %td <code>config</code>
+          %td The adapter's namespaced configuration object. Equivalent to <code>robot.config.adapters.your_adapter_namespace</code>.
+        %tr
+          %td <code>log</code>
+          %td A convenience method for accessing the global logger object. Equivalent to <code>Lita.logger</code>.
 
       %h3#block-syntax Block syntax
 
