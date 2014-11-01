@@ -128,6 +128,14 @@ title: "Getting Started: Configuration"
           %td The maximum number of system threads Lita's web server will use. The number will vary automatically based on load, but it will never go above this number.
           %td
             %code 16
+        %tr
+          %td
+            %code config.http.middleware
+          %td
+            %code Lita::MiddlewareRegistry
+          %td Rack middleware to be added to the built-in web server. Call <code>#use</code> on this object, passing it a Rack middleware class, and any initialization arguments or block the middleware needs. This is identical to the interface of <code>Rack::Builder#use</code>.
+          %td
+            %code Lita::MiddlewareRegistry.new
         %tr.danger
           %td
             %code config.adapter
