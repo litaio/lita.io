@@ -120,3 +120,22 @@ title: Plugin Authoring
             end
 
       For a more detailed example that makes use of both hooks and custom route options, check out <a href="https://github.com/jimmycuadra/lita-keyword-arguments">lita-keyword-arguments</a>.
+
+      %h3#using-extensions Using extensions
+
+      %p When using an extension to add functionality to an adapter or handler you're writing, there are a few important "gotchas" to be aware of.
+
+      %p Extensions do not "automatically activate" in the same way that adapters and handlers do when Lita is started. To load an extension, add it as a dependency in your plugin's gemspec file and manually <code>require</code> it inside your plugin's code, before the plugin is defined.
+
+      %p When testing a handler with Lita's built-in RSpec extras, the <code>Lita::Registry</code> object that stores global state, including which extension hooks are registered, gets reset for each test run. This means that in order for extensions that register hooks to be active during each test run, you need to manually register them in a <code>before</code> block. If the documentation for the extension doesn't specify which hooks it registers, you may need to look at its source code to see for yourself.
+
+      %p For example, the <a href="https://github.com/jimmycuadra/lita-keyword-arguments">lita-keyword-arguments</a> extension registers a callback to the <code>:trigger_route</code> hook. In order to activate it in tests, you would add the following code to your <code>spec/spec_helper.rb</code> file:
+
+      %pre
+        %code.ruby
+          :preserve
+            RSpec.configure do |config|
+              config.before do
+                registry.register_hook(:trigger_route, Lita::Extensions::KeywordArguments)
+              end
+            end
