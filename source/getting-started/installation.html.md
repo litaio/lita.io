@@ -1,5 +1,7 @@
 ---
-title: "Getting Started: Installation"
+guide: Getting Started
+section: Installation
+menu: getting-started
 ---
 
 .container

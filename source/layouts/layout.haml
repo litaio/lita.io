@@ -1,14 +1,14 @@
 = wrap_layout :outer do
   .container
     .page-header
-      %h1= current_page.data.title
+      %h1= current_page.data.guide || current_page.data.title
 
     .row
-      .col-md-3= partial "#{current_page.data.category}/menu"
+      .col-md-3= partial "#{current_page.data.menu}/menu"
       .col-md-9
-        - if current_page.data.subtitle
+        - if current_page.data.section
           .page-header.first-heading
-            %h2= current_page.data.subtitle
+            %h2= current_page.data.section
 
         = find_and_preserve do
           = yield
