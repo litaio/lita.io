@@ -1,6 +1,6 @@
-set :css_dir, 'stylesheets'
-set :js_dir, 'javascripts'
-set :images_dir, 'images'
+config[:css_dir] = 'stylesheets'
+config[:js_dir] = 'javascripts'
+config[:images_dir] = 'images'
 
 activate :directory_indexes
 
