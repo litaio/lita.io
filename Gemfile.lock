@@ -97,6 +97,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    redcarpet (3.2.2)
     sass (3.4.10)
     sprockets (2.12.3)
       hike (~> 1.2)
@@ -128,3 +129,4 @@ DEPENDENCIES
   haml
   middleman
   middleman-deploy
+  redcarpet

@@ -4,3 +4,4 @@ gem "bootstrap-sass", require: false
 gem "haml"
 gem "middleman"
 gem "middleman-deploy"
+gem "redcarpet"
