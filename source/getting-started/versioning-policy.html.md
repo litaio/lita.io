@@ -4,19 +4,17 @@ section: Versioning Policy
 menu: getting-started
 ---
 
-%p Lita follows #{link_to 'Semantic Versioning', 'http://semver.org/'}. Lita's version number has three parts: MAJOR, MINOR, and PATCH, e.g. 1.2.3. In short:
+Lita follows [Semantic Versioning](http://semver.org). Lita's version number has three parts: MAJOR, MINOR, and PATCH, e.g. 1.2.3. In short:
 
-%ul
-  %li Any changes which could cause existing plugins to raise exceptions or change behavior will increase the MAJOR version.
-  %li Any new functionality that is completely backwards-compatible will increase the MINOR version.
-  %li Any bug fixes or changes to minor behavior that were not working as documented will increase the PATCH version.
+* Any changes which could cause existing plugins to raise exceptions or change behavior will increase the MAJOR version.
+* Any new functionality that is completely backwards-compatible will increase the MINOR version.
+* Any bug fixes or changes to minor behavior that were not working as documented will increase the PATCH version.
 
-%h3#deprecation-policy Deprecation Policy
+### Deprecation policy {#deprecation-policy}
 
-%p A deprecated feature is one that is marked to be removed in a future version. It may or may not have replacement or alternative functionality.
+A deprecated feature is one that is marked to be removed in a future version. It may or may not have replacement or alternative functionality.
 
-%p Rules about deprecations:
+Rules about deprecations:
 
-%ul
-  %li Features will only be deprecated in new MAJOR versions. This means that all non-deprecated features will continue to work in the next MAJOR version.
-  %li When a feature is deprecated, it will not be completely removed until the following MAJOR version. This means that upgrading Lita to a new MAJOR version will only potentially break plugins using deprecated functionality from two MAJOR versions ago. A full MAJOR version period is given for plugins to safely update code for any deprecated functionality.
+* Features will only be deprecated in new MAJOR versions. This means that all non-deprecated features will continue to work in the next MAJOR version.
+* When a feature is deprecated, it will not be completely removed until the following MAJOR version. This means that upgrading Lita to a new MAJOR version will only potentially break plugins using deprecated functionality from two MAJOR versions ago. A full MAJOR version period is given for plugins to safely update code for any deprecated functionality.
