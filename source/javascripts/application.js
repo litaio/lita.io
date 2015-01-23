@@ -1,7 +1,7 @@
 //= require hljs
 
 $(function () {
-  $('code.ruby').each(function (_, el) {
+  $('code.language-ruby').each(function (_, el) {
     hljs.highlightBlock(el);
   });
 });
