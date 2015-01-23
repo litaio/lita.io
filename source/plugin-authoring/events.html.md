@@ -24,5 +24,6 @@ Name | Description
 `:loaded` | Fired when the `Lita::Robot` object has been initialized during start up. This can be used as a hook point for handlers to define routes that depend on user configuration not known until runtime, run migrations on data in Redis, or other start up tasks.
 `:shut_down_started` | Fired when the robot first begins shutting down.
 `:shut_down_completed` | Fired when the robot has finished shutting down both the built-in web server and the chat adapter.
+`:unhandled_message` | Fired when the robot receives a message that does not match any routes.
 
 Adapters are encouraged to trigger a `:connected` event so that other plugins can run set up code that needs to be done at runtime.
