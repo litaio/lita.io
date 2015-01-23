@@ -2,6 +2,8 @@ config[:css_dir] = 'stylesheets'
 config[:js_dir] = 'javascripts'
 config[:images_dir] = 'images'
 
+config[:markdown] = { auto_ids: false }
+
 page '/index.html', layout: 'outer'
 
 activate :directory_indexes
