@@ -4,149 +4,140 @@ section: Testing
 menu: plugin-authoring
 ---
 
-%p It's a core philosophy of Lita that any plugins you write for your robot should be as thoroughly tested as any other program you would write. To make this easier, Lita ships with some handy extras for <a href="https://github.com/rspec/rspec">RSpec</a> that make testing a plugin dead simple. Since Lita plugins are just Ruby code, they can be tested with any framework you like, but RSpec is recommended for its expressiveness and powerful features.
+It's a core philosophy of Lita that any plugins you write for your robot should be as thoroughly tested as any other program you would write. To make this easier, Lita ships with some handy extras for [RSpec](https://github.com/rspec/rspec) that make testing a plugin dead simple. Since Lita plugins are just Ruby code, they can be tested with any framework you like, but RSpec is recommended for its expressiveness and powerful features.
 
-%h3#setup Setup
+### Setup {#setup}
 
-%p If you created your plugin with the built-in generator, the files necessary for your RSpec test suite will already be in place in the <code>spec</code> directory. If you're building your plugin manually, you only need to require your plugin and Lita's RSpec extras before writing your tests. It's recommended that you put this in <code>spec/spec_helper.rb</code> and then simply require "spec_helper" in each spec file.
+If you created your plugin with the built-in generator, the files necessary for your RSpec test suite will already be in place in the `spec` directory. If you're building your plugin manually, you only need to require your plugin and Lita's RSpec extras before writing your tests. It's recommended that you put this in `spec/spec_helper.rb` and then simply require "spec_helper" in each spec file.
 
-%pre
-  %code.ruby
-    require "lita-your-plugin"
-    require "lita/rspec"
+~~~ ruby
+require "lita-your-plugin"
+require "lita/rspec"
+~~~
 
-%h3#testing-adapters Testing adapters and extensions
+### Testing adapters and extensions {#testing-adapters}
 
-%p To include some helpful setup for testing Lita code, require "lita/rspec", then add <code>lita: true</code> to the metadata for an example group.
-%p Adapters and extensions should be unit tested as you would any other Ruby code. For a few workflow improvements, activate <code>Lita::RSpec</code> by passing <code>:lita</code> as RSpec metadata on your plugin's example group:
+To include some helpful setup for testing Lita code, require "lita/rspec", then add `lita: true` to the metadata for an example group.
+Adapters and extensions should be unit tested as you would any other Ruby code. For a few workflow improvements, activate `Lita::RSpec` by passing `:lita` as RSpec metadata on your plugin's example group:
 
-%pre
-  %code.ruby
-    :preserve
-      describe Lita::Adapters::MyAdapter, lita: true do
-        describe "#run" do
-          # ...
-        end
+~~~ ruby
+describe Lita::Adapters::MyAdapter, lita: true do
+  describe "#run" do
+    # ...
+  end
 
-        # ...
-      end
+  # ...
+end
+~~~
 
-%p Turning on <code>Lita::RSpec</code> will have the following effects:
+Turning on `Lita::RSpec` will have the following effects:
 
-%ul
-  %li All Redis interaction will be namespaced to a test environment and automatically cleared out before each example.
-  %li Lita's logger is stubbed to prevent log messages from cluttering up your test output.
-  %li A brand new <code>Lita::Registry</code> is created for each test and made accessible via the <code>registry</code> method. The registry is used to hold global state such as all the plugins Lita knows about and the user configuration.
+* All Redis interaction will be namespaced to a test environment and automatically cleared out before each example.
+* Lita's logger is stubbed to prevent log messages from cluttering up your test output.
+* A brand new `Lita::Registry` is created for each test and made accessible via the `registry` method. The registry is used to hold global state such as all the plugins Lita knows about and the user configuration.
 
-%p The first two points you don't really have to think about. The third one you will likely interact with directly. To create an instance of an adapter, you must pass a <code>Lita::Robot</code> as an argument. The robot, in turn, takes a registry as an argument. Your set up code will end looking something like this:
+The first two points you don't really have to think about. The third one you will likely interact with directly. To create an instance of an adapter, you must pass a `Lita::Robot` as an argument. The robot, in turn, takes a registry as an argument. Your set up code will end looking something like this:
 
-%pre
-  %code.ruby
-    :preserve
-      describe Lita::Adapters::MyAdapter, lita: true do
-        let(:robot) { Lita::Robot.new(registry) }
-        subject { described_class.new(robot) }
-      end
+~~~ ruby
+describe Lita::Adapters::MyAdapter, lita: true do
+  let(:robot) { Lita::Robot.new(registry) }
+  subject { described_class.new(robot) }
+end
+~~~
 
-%p At this point you'll have a functioning instance of your adapter as the test subject and can proceed normally.
+At this point you'll have a functioning instance of your adapter as the test subject and can proceed normally.
 
-%h3#testing-handlers Testing handlers
+### Testing handlers {#testing-handlers}
 
-%p The setup for testing a handler is similar, but use <code>:lita_handler</code> as metadata instead.
+The setup for testing a handler is similar, but use `:lita_handler` as metadata instead.
 
-%pre
-  %code.ruby
-    :preserve
-      describe Lita::Handlers::MyHandler, lita_handler: true do
-        # ...
-      end
+~~~ ruby
+describe Lita::Handlers::MyHandler, lita_handler: true do
+  # ...
+end
+~~~
 
-%p This will have the following effects, in addition to the effects of the <code>lita: true</code> metadata hook:
+This will have the following effects, in addition to the effects of the `lita: true` metadata hook:
 
-%ul
-  %li Your handler will automatically be added to the registry before each example.
-  %li Strings sent with <code>Lita::Robot#send_messages</code> will be pushed to an array accessible as <code>replies</code> so you can make expectations about output from the robot.
-  %li
-    You have access to the following cached objects set with <code>let</code>:
-    %ul
-      %li <code>robot</code> – a <code>Lita::Robot</code>
-      %li <code>source</code> – a <code>Lita::Source</code>, the source of the incoming message
-      %li <code>user</code> – a <code>Lita::User</code>, the user who sent the message, attached to the source
+* Your handler will automatically be added to the registry before each example.
+* Strings sent with `Lita::Robot#send_messages` will be pushed to an array accessible as `replies` so you can make expectations about output from the robot.
+* You have access to the following cached objects set with `let`:
+  * `robot` – a `Lita::Robot`
+  * `source` – a `Lita::Source`, the source of the incoming message
+  * `user` – a `Lita::User`, the user who sent the message, attached to the source
 
-    %p Note that these objects are instances of the real classes and not test doubles.
+  Note that these objects are instances of the real classes and not test doubles.
 
-%h4#testing-routes Testing routes
+#### Testing routes {#testing-routes}
 
-%p You can test routes of all types very easily using these RSpec matchers:
+You can test routes of all types very easily using these RSpec matchers:
 
-%pre
-  %code.ruby
-    :preserve
-      # Chat routes
-      it { is_expected.to route("some message") }
-      it { is_expected.to route("some message").to(:some_callback) }
-      it { is_expected.to route_command("some command") }
-      it { is_expected.to route_command("some command").to(:some_other_callback) }
-      it { is_expected.to route("secret").with_authorization_for(:secret_admins).to(:secret_callback) }
+~~~ ruby
+# Chat routes
+it { is_expected.to route("some message") }
+it { is_expected.to route("some message").to(:some_callback) }
+it { is_expected.to route_command("some command") }
+it { is_expected.to route_command("some command").to(:some_other_callback) }
+it { is_expected.to route("secret").with_authorization_for(:secret_admins).to(:secret_callback) }
 
-      # HTTP routes
-      it { is_expected.to route_http(:get, "/foo") }
-      it { is_expected.to route_http(:get, "/foo").to(:some_http_callback) }
+# HTTP routes
+it { is_expected.to route_http(:get, "/foo") }
+it { is_expected.to route_http(:get, "/foo").to(:some_http_callback) }
 
-      # Event routes
-      it { is_expected.to route_event(:some_event) }
-      it { is_expected.to route_event(:some_event).to(:some_event_callback) }
+# Event routes
+it { is_expected.to route_event(:some_event) }
+it { is_expected.to route_event(:some_event).to(:some_event_callback) }
+~~~
 
-%p Matchers with a fluent (chained) interface make the expectation more specific. If the name of a route is not specified, RSpec will only verify that the message, HTTP request, or event routes to <em>any</em> callback. The <code>with_authorization_for</code> method is necessary to verify routes that are restricted to certain authorization groups.
+Matchers with a fluent (chained) interface make the expectation more specific. If the name of a route is not specified, RSpec will only verify that the message, HTTP request, or event routes to *any* callback. The `with_authorization_for` method is necessary to verify routes that are restricted to certain authorization groups.
 
-%p Each of these matchers can be turned into a negative expectation by writing <code>is_expected.not_to</code> instead of <code>is_expected.to</code>. The matchers themselves are the same in both positive and negative forms.
+Each of these matchers can be turned into a negative expectation by writing `is_expected.not_to` instead of `is_expected.to`. The matchers themselves are the same in both positive and negative forms.
 
-.alert.alert-info
-  %strong Note:
+<div class="alert alert-info">
+  <strong>Note:</strong>
   As always, be careful when making negative message expectations, as a route might fail to match for a reason other than why you think. Positive message expectations are always preferred when possible.
+</div>
 
-%h4#testing-behavior Testing behavior
+#### Testing behavior {#testing-behavior}
 
-%p Since the behavioral logic in handlers are just regular instance methods (unless you use the defined callbacks with a block), you can unit test them just as you would any other methods in a Ruby class. However, if you prefer more of an integration testing approach, there are some helper methods available to assist with this.
+Since the behavioral logic in handlers are just regular instance methods (unless you use the defined callbacks with a block), you can unit test them just as you would any other methods in a Ruby class. However, if you prefer more of an integration testing approach, there are some helper methods available to assist with this.
 
-%p To send a message to the robot, use <code>send_message</code> and <code>send_command</code>. Then set expectations about the contents of the <code>replies</code> array.
+To send a message to the robot, use `send_message` and `send_command`. Then set expectations about the contents of the `replies` array.
 
-%pre
-  %code.ruby
-    :preserve
-      it "lets everyone know when someone is happy" do
-        send_message("I'm happy!")
-        expect(replies.last).to eq("Hey, everyone! \#{user.name} is happy! Isn't that nice?")
-      end
+~~~ ruby
+it "lets everyone know when someone is happy" do
+  send_message("I'm happy!")
+  expect(replies.last).to eq("Hey, everyone! #{user.name} is happy! Isn't that nice?")
+end
 
-      it "greets anyone that says hi to it" do
-        send_command("hi")
-        expect(replies.last).to eq("Hello, \#{user.name}!")
-      end
+it "greets anyone that says hi to it" do
+  send_command("hi")
+  expect(replies.last).to eq("Hello, #{user.name}!")
+end
+~~~
 
-%p If you want to send a message or command from a user other than the default test user (which is set up for you with <code>let(:user)</code> automatically by <code>Lita::RSpec</code>), you can invoke either method with the <code>:as</code> option, supplying a <code>Lita::User</code> object.
+If you want to send a message or command from a user other than the default test user (which is set up for you with `let(:user)` automatically by `Lita::RSpec`), you can invoke either method with the `:as` option, supplying a `Lita::User` object.
 
-%pre
-  %code.ruby
-    :preserve
-      it "lets everyone know that Carl is happy" do
-        carl = Lita::User.create(123, name: "Carl")
-        send_message("I'm happy!", as: carl)
-        expect(replies.last).to eq("Hey, everyone! Carl is happy! Isn't that nice?")
-      end
+~~~ ruby
+it "lets everyone know that Carl is happy" do
+  carl = Lita::User.create(123, name: "Carl")
+  send_message("I'm happy!", as: carl)
+  expect(replies.last).to eq("Hey, everyone! Carl is happy! Isn't that nice?")
+end
+~~~
 
-%p To test the behavior of an HTTP route callback, use the <code>http</code> method. This method returns a <code>Faraday::Connection</code> object. Call one of the standard HTTP verb methods on this object to make an HTTP request and return a response. Then you can set expectations about the response.
+To test the behavior of an HTTP route callback, use the `http` method. This method returns a `Faraday::Connection` object. Call one of the standard HTTP verb methods on this object to make an HTTP request and return a response. Then you can set expectations about the response.
 
-%pre
-  %code.ruby
-    :preserve
-      describe "#foo" do
-        it "writes 'bar' to the page" do
-          response = http.get("/foo")
-          expect(response.body).to eq("bar")
-        end
-      end
+~~~ ruby
+describe "#foo" do
+  it "writes 'bar' to the page" do
+    response = http.get("/foo")
+    expect(response.body).to eq("bar")
+  end
+end
+~~~
 
-.alert.alert-info
-  %strong Note:
+<div class="alert alert-info">
+  <strong>Note:</strong>
   The <code>http</code> method requires that the <code>rack-test</code> gem be part of your bundle, either in the Gemfile or set as a development dependency in your plugin's gemspec.
+</div>
