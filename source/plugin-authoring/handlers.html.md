@@ -266,6 +266,86 @@ This would expose the configuration attribute at `Lita.config.handlers.handler_w
 
 The `config` class method, shown in the code example above, takes the name of the attribute to create as a Ruby symbol, with a few optional parameters. For full details on using the `config` method, take a look at the [configuration](/plugin-authoring/configuration/) page.
 
+### Templates {#templates}
+
+If you want to take advantage of a specific chat service's message formatting, such as bold, colors, or monospaced fonts, you can use Lita's template feature. Templates allow you to put the body of a message response in a separate template file. You can have multiple templates with the same template name, and Lita will automatically pick the appropriate file for the current adapter at runtime. If you're using adapter-specific templates, you should also have a generic fallback template that will be used when an adapter you don't explicitly support is used.
+
+Template files should be placed in the `templates` directory at the root of your plugin. If you generated your plugin with a version of Lita prior to 4.2.0, you'll need to create this directory yourself. Template files are given a unique name and the `erb` extension. For example, `example.erb`. To create an adapter-specific version of the same template, include the name of the adapter (as it is specified in `config.robot.adapter`) as the first file extension. For an IRC-specific template, you would name the file `example.irc.erb`. This will be selected when Lita is running with the IRC adapter. Otherwise, the generic `example.erb` will be selected. You can have as many different adapter-specific versions for the same template as you'd like. For example, you could have `example.irc.erb`, `example.hipchat.erb`, `example.slack.erb`, and the fallback `example.erb`.
+
+In order to render a template for an outgoing message, you the handler's `render_template` method, passing it the name of the template:
+
+~~~ ruby
+module Lita
+  module Handlers
+    module HandlerWithTemplates < Handler
+      route(/example/i, command: true) do |response|
+        response.reply(render_template("example"))
+      end
+    end
+  end
+end
+~~~
+
+If we have two template files, `example.irc.erb` and `example.erb` with these contents:
+
+~~~
+/me provides an example.
+~~~
+
+~~~
+Here is an example.
+~~~
+
+Then on IRC, the interaction would look like this:
+
+~~~
+ You: Lita, example
+Lita provides an example.
+~~~
+
+And on any other chat service, it would look like this:
+
+~~~
+ You: Lita, example
+Lita: Here is an example.
+~~~
+
+You should always include a generic version of the template. If you try to render a template that doesn't exist, your handler will crash.
+
+Because templates are written in the ERB format, they also support interpolation of variables. The second argument to `render_template` is a hash of variable name and variable value pairs. Each pair provided will create an instance variable of the given name with the given value that is accessible inside the template. For example, if we had a template named `greet.erb` with these contents:
+
+~~~ erb
+Hello, <%= @name %>!
+~~~
+
+And we rendered the template like this:
+
+~~~ ruby
+response.reply(render_template("greet", name: "Carl"))
+~~~
+
+The output to the chat would look like this:
+
+~~~
+Hello, Carl!
+~~~
+
+For more information about the ERB format, consult Ruby's standard library documentation or check out [An Introduction to ERB Templating](http://www.stuartellis.eu/articles/erb/).
+
+In order to use the `render_template` method, the handler must have its `template_root` set to the file path of the templates directory. If you generated your handler with Lita 4.2.0 or greater, this is done for you automatically. Otherwise, you'll need to set it yourself like this:
+
+~~~ ruby
+module Lita
+  module Handlers
+    class HandlerWithTemplates < Handler
+      template_root File.expand_path("../../../../templates", __FILE__)
+    end
+  end
+end
+~~~
+
+Calling `render_template` without setting the template root will cause your handler to crash.
+
 ### Examples {#examples}
 
 Here is a basic handler which simply echoes back whatever the user says.
