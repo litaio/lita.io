@@ -27,7 +27,16 @@ The available hooks are as follows:
   </tr>
   <tr>
     <td><code>:before_run</code></td>
-    <td>Called when <code>Lita.run</code> is invoked. Useful for extensions that need to perform operations just before the robot starts.</td>
+    <td>Called when <code>Lita.run</code> is invoked, but before configuration is processed. Useful for extensions that need to perform operations just before the robot starts.</td>
+    <td>
+      <ul>
+        <li><code>:config_path</code> (String) - The file path to the Lita config file that will be loaded, or <code>nil</code> if there is no config file.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><code>:config_finalized</code></td>
+    <td>Called when <code>Lita.run</code> is invoked, after configuration is built, validated, and frozen.</td>
     <td>
       <ul>
         <li><code>:config_path</code> (String) - The file path to the Lita config file that will be loaded, or <code>nil</code> if there is no config file.</li>
