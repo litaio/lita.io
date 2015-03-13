@@ -68,6 +68,16 @@ This will have the following effects, in addition to the effects of the `lita: t
 
   Note that these objects are instances of the real classes and not test doubles.
 
+If you need to register additional handlers, for cases when functionality is divided or shared across multiple classes, you can use the `:additional_lita_handlers` metadata hook:
+
+~~~ ruby
+describe Lita::Handlers::MyHandler, lita_handler: true, additional_lita_handlers: SharedConfig do
+  # ...
+end
+~~~
+
+This will register both `MyHandler` and `SharedConfig` for each example. The value of `:additional_lita_handlers` can be a single object or an array of objects.
+
 #### Testing routes {#testing-routes}
 
 You can test routes of all types very easily using these RSpec matchers:
