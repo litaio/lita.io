@@ -34,6 +34,7 @@ Name | Type | Description | Default
 `config.robot.locale` | `Symbol`, `String` | The locale code for the language Lita's user interface will use. | `I18n.locale`
 `config.robot.log_level` | `Symbol`, `String` | The severity level of log messages to output. Valid options are, in order of severity: `:debug`, `:info`, `:warn`, `:error`, and `:fatal`. For whichever level you choose, log messages of that severity and greater will be output. | `:info`
 `config.robot.admins` | `Array<String>` | An array of string user IDs which will tell Lita which users are considered administrators. Only these users will have access to Lita's "auth" commands. The IDs needed for this attribute can be found using the built-in [user info](/getting-started/usage/#user-info) command. | `nil`
+`config.robot.error_handler` | `#call` | A callable object invoked whenever an exception is raised. | `-> (error) {}`
 `config.redis` | `Hash` | Options for the Redis connection. | `{}`
 `config.http.host` | `String` | The host Lita's web server will bind to. | `"0.0.0.0"`
 `config.http.port` | `Integer`, `String` | The port Lita's web server will listen on. | `8080`
