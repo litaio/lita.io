@@ -366,6 +366,31 @@ module Lita
 end
 ~~~
 
+Here is a handler that shows if a message was received privately or not:
+
+~~~ ruby
+module Lita
+  module Handlers
+    class Secret < Handler
+      route(/^toomanysecrets$/,
+            :secret,
+            help: { 'toomanysecrets' => 'Will show if the message came from a private channel' }
+      )
+
+      def secret
+        if response.message.source.private_message?
+          response.reply('That message was in a private chat')
+        else
+          response.reply('That message was NOT in a private chat')
+        end
+      end
+    end
+
+    Lita.register_handler(Secret)
+  end
+end
+~~~
+
 Here is a handler that tells a user who their United States congressional representative is based on zip code with data from a fictional HTTP API. The results are saved in the handler's namespaced Redis store to save HTTP calls on future requests.
 
 ~~~ ruby
