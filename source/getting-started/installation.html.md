@@ -16,7 +16,7 @@ If you don't already have a development environment with these dependencies inst
 The easiest way to get started with Lita is to use the Vagrant virtual machine provided specifically for Lita development. If you're not familiar with it, Vagrant is a tool for managing complete development environments inside virtual machines. Using Vagrant and the Lita development environment, you can quickly boot a virtual Ubuntu machine with Ruby, Redis, and Lita pre-installed and ready to go. This VM works regardless of what type of computer you use &mdash; Linux, Mac OS X, and Windows are all supported by Vagrant. It takes just a few steps:
 
 1. Install [Vagrant](https://www.vagrantup.com/) for your operating system.
-1. Install [VirtualBox](VirtualBox), the virtualization software Vagrant uses behind the scenes. (If you're already a Vagrant user and you prefer using a [VMware](http://www.vmware.com/) provider, you don't need to install VirtualBox. The Lita development environment supports both providers.)
+1. Install [VirtualBox](https://www.virtualbox.org/), the virtualization software Vagrant uses behind the scenes. (If you're already a Vagrant user and you prefer using a [VMware](http://www.vmware.com/) provider, you don't need to install VirtualBox. The Lita development environment supports both providers.)
 1. Download and unzip the [Lita development environment](https://github.com/litaio/development-environment/archive/master.zip).
 1. In a terminal window, move into the Lita development environment directory, and run <kbd>vagrant up</kbd>. This will download the virtual machine and boot it. The first time you do this it will take a few minutes.
 1. Once the VM is finished booting, run <kbd>vagrant ssh</kbd> to connect.
