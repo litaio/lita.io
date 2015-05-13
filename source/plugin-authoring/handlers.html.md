@@ -28,7 +28,7 @@ route(/^echo\s+(.+)/, :echo)
 Name | Type | Description | Default
 --- | --- | --- | ---
 `:command` | Boolean | If set to true, the route will only trigger when "directed" at the robot. Directed means that it's sent via a private message, or the message is prefixed with the bot's name in some form (optionally prefixed with an @, and optionally followed by a colon or comma and white space). This prefix is stripped from the message body itself, but `Lita::Message#command?` available in handlers can be used if you need to determine whether or not a message was a command after it's been routed. | `false`
-`:restrict_to` | `Symbol`, `String`, `Array<String, Symbol>` | Authorization groups necessary to trigger the route. The user sending the message must be a member of at least one of the supplied groups. See [authorization groups](/getting-started/#authorization-groups) for more information. | `nil`
+`:restrict_to` | `Symbol`, `String`, `Array<String, Symbol>` | Authorization groups necessary to trigger the route. The user sending the message must be a member of at least one of the supplied groups. See [authorization groups](/getting-started/usage/#authorization-groups) for more information. | `nil`
 `:help` | `Hash<String>` | A map of example invocations of the route and descriptions of what they do. These values will be used to generate the listing for the built-in "help" handler. The robot's mention name will automatically be added to the front of the example if the route is a command. | `{}`
 
 Here is an example of a route declaration with all the possible options:
