@@ -83,7 +83,7 @@ You: Lita part #mychannel
   These commands are an optional part of the adapter plugin interface and may not be implemented by every adapter.
 </div>
 
-### Authorization groups #{authorization-groups}
+### Authorization groups {#authorization-groups}
 
 Handlers can restrict chat routes to certain users through the authorization groups feature. For example, certain commands in the [karma](https://github.com/jimmycuadra/lita-karma) plugin require the user sending the message to be in the `:karma_admins` group.
 
