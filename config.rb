@@ -7,6 +7,7 @@ config[:markdown] = { auto_ids: false }
 page '/index.html', layout: 'outer'
 
 activate :directory_indexes
+activate :livereload
 
 configure :build do
   activate :asset_hash
