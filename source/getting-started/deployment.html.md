@@ -8,6 +8,11 @@ While you can easily run Lita from your own computer, for a more permanent insta
 
 ### Heroku {#heroku}
 
+<div class="alert alert-danger">
+  <strong>Warning:</strong>
+  Heroku's free tier has traditionally been a popular place to deploy chat bots. However, <a href="https://blog.heroku.com/archives/2015/5/7/new-dyno-types-public-beta">Heroku is changing their pricing</a> and the free tier can no longer be run all the time. If you choose to deploy to Heroku, you'll either need to sign up for a paid plan, or tolerate some Lita downtime every day.
+</div>
+
 There are a few things worth mentioning when deploying Lita to Heroku:
 
 1.  Your Procfile should contain one process:
@@ -24,8 +29,6 @@ There are a few things worth mentioning when deploying Lita to Heroku:
       config.http.port = ENV["PORT"]
     end
     ~~~
-
-1.  Consider using a service like [Uptime Robot](http://www.uptimerobot.com/) to monitor your Lita instance and keep it from [sleeping](https://blog.heroku.com/archives/2013/6/20/app_sleeping_on_heroku) when running on a free dyno. `/lita/info` is a reliable path to hit from the web to keep it running.
 
 ### Daemonization {#daemonization}
 
