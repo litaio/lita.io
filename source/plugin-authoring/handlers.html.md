@@ -272,7 +272,7 @@ If you want to take advantage of a specific chat service's message formatting, s
 
 Template files should be placed in the `templates` directory at the root of your plugin. If you generated your plugin with a version of Lita prior to 4.2.0, you'll need to create this directory yourself. Template files are given a unique name and the `erb` extension. For example, `example.erb`. To create an adapter-specific version of the same template, include the name of the adapter (as it is specified in `config.robot.adapter`) as the first file extension. For an IRC-specific template, you would name the file `example.irc.erb`. This will be selected when Lita is running with the IRC adapter. Otherwise, the generic `example.erb` will be selected. You can have as many different adapter-specific versions for the same template as you'd like. For example, you could have `example.irc.erb`, `example.hipchat.erb`, `example.slack.erb`, and the fallback `example.erb`.
 
-In order to render a template for an outgoing message, you the handler's `render_template` method, passing it the name of the template:
+In order to render a template for an outgoing message, you use the handler's `render_template` method, passing it the name of the template:
 
 ~~~ ruby
 module Lita
@@ -330,9 +330,33 @@ The output to the chat would look like this:
 Hello, Carl!
 ~~~
 
+You also have the option of adding your own helper methods to the template by using the `render_template_with_helpers` method. This version takes an extra argument, an array of Ruby modules, and makes all instance methods in them available to the template being rendered. For example, if you have a template like this:
+
+~~~ erb
+<%= reverse_name(@first, @last) %>
+~~~
+
+And render the template with this code:
+
+~~~ ruby
+helper = Module.new do
+  def reverse_name(first, last)
+    "#{last}, #{first}"
+  end
+end
+
+response.reply(render_template("name", [helper], first: "Carl", last: "Pug"))
+~~~
+
+The output to the chat would look like this:
+
+~~~
+Pug, Carl
+~~~
+
 For more information about the ERB format, consult Ruby's standard library documentation or check out [An Introduction to ERB Templating](http://www.stuartellis.eu/articles/erb/).
 
-In order to use the `render_template` method, the handler must have its `template_root` set to the file path of the templates directory. If you generated your handler with Lita 4.2.0 or greater, this is done for you automatically. Otherwise, you'll need to set it yourself like this:
+In order to use the `render_template` or `render_template_with_helpers` methods, the handler must have its `template_root` set to the file path of the templates directory. If you generated your handler with Lita 4.2.0 or greater, this is done for you automatically. Otherwise, you'll need to set it yourself like this:
 
 ~~~ ruby
 module Lita
@@ -344,7 +368,7 @@ module Lita
 end
 ~~~
 
-Calling `render_template` without setting the template root will cause your handler to crash.
+Calling `render_template` or `render_template_with_helpers` without setting the template root will cause your handler to crash.
 
 ### Examples {#examples}
 
