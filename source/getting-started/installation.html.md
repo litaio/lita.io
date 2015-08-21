@@ -6,7 +6,7 @@ menu: getting-started
 
 To run Lita, the following software is required:
 
-* Ruby, version 2.0 or greater
+* Ruby, version 2.0 or greater (JRuby 9.0.0.0+ or Rubinius 2+ also work)
 * Redis, version 2.6 or greater
 
 If you don't already have your own development environment with these dependencies installed, there are two approaches to take to get started with Lita.
@@ -84,6 +84,10 @@ When you're done, run <kbd>exit</kbd> to leave the Lita Development Environment,
 
 Methods for installing Ruby 2.0 vary a lot between systems and are largely beyond the scope of this documentation. However, here are some quick tips for various operating systems:
 
+#### Ruby implementations
+
+Lita works with all the major implementations of Ruby: MRI, JRuby, and Rubinius. The minimum required version of JRuby is 9.0.0.0. The minimum required version of Rubinius is 2.2. Because JRuby does not support fork/exec, Lita's built-in process daemonization will not work, but this feature is going to be removed in the next version of Lita and should not be relied on anyway.
+
 #### Installing Ruby
 
 ##### Linux
@@ -127,7 +131,3 @@ For a full list of possible invocations of the `lita` command, run:
 ~~~
 lita help
 ~~~
-
-<div class="alert alert-info">
-  <strong>Note:</strong>
-  If you are running Lita on JRuby, you'll need to use Ruby 2.0 mode, by invoking lita with <kbd>jruby --2.0 -S lita</kbd> or setting the environment variable <var>JRUBY_OPTS</var> to <var>--2.0</var>
