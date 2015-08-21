@@ -136,6 +136,15 @@ it "lets everyone know that Carl is happy" do
 end
 ~~~
 
+You can also specify that a message came from a certain chat room with the `:from` option and a `Lita::Room` object.
+
+~~~ ruby
+it "replies with the room the message came from" do
+  send_message("Where am I?", from: Lita::Room.create("#lita.io"))
+  expect(replies.last).to eq("You are chatting in #lita.io!")
+end
+~~~
+
 To test the behavior of an HTTP route callback, use the `http` method. This method returns a `Faraday::Connection` object. Call one of the standard HTTP verb methods on this object to make an HTTP request and return a response. Then you can set expectations about the response.
 
 ~~~ ruby
