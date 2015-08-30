@@ -225,6 +225,10 @@ Name | Description
 `config` | The adapter's namespaced configuration object. Equivalent to `robot.config.adapters.your_adapter_namespace`.
 `log` | A convenience method for accessing the global logger object. Equivalent to `Lita.logger`.
 
+### Chat-service-specific methods {#chat-service}
+
+The `Lita::Robot` API has methods to cover the lowest common denominator of functionality supported across many different chat services. If you are building an adapter for a chat service that has advanced or non-standard functionality (e.g. attachments on Slack), you should implement `Lita::Adapter#chat_service`. This method should return an object of your choice with methods for accessing these chat-service-specific methods. Plugin authors can access this object by calling `Lita::Robot#chat_service`. Be sure to document any custom methods for your adapter exposed through this interface so users of your adapter know what features are available to them.
+
 ### Block syntax {#block-syntax}
 
 If you're just playing around, and don't want to deal with all the boilerplate of a Ruby gem, adapters can also be created by passing a block to `Lita.register_adapter`:

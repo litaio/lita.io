@@ -370,6 +370,23 @@ end
 
 Calling `render_template` or `render_template_with_helpers` without setting the template root will cause your handler to crash.
 
+### Chat-service-specific methods {#chat-service}
+
+If templates are not enough to fully grasp the power of the chat services you want to support, you can also use any additional methods exposed through `Lita::Robot#chat_service`. The return value of this method is `nil` by default, but some adapters may return a custom object with methods providing access to functionality specific to that chat service. A good example of this is the ability to post "attachments" in Slack – a concept not shared across all chat services and hence not supported directly by the `Lita::Robot` API. Since chat service methods are specific to the chat service, you'll need to consult the documentation for the adapters you want to support to see if and how they implement this.
+
+To actually take advantage of chat-service-specific methods, you should take an approach similar to templates by providing fallback behavior for when your plugin is used with a chat service you're not explicitly providing behavior for. You can use the value of `robot.config.robot.adapter` to determine which adapter is in use. (Note that within a handler, `robot.config` is a different value that `config`. The former is the top-level configuration object and the latter is the configuration for the current handler.)
+
+~~~ ruby
+case robot.config.robot.adapter
+when :slack
+  robot.chat_service.send_attachment(target, attachment)
+when :fancy_chat
+  robot.chat_service.upload_file(file)
+else
+  robot.send_message(target, message)
+end
+~~~
+
 ### Examples {#examples}
 
 Here is a basic handler which simply echoes back whatever the user says.
