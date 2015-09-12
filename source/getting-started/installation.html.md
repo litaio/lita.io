@@ -53,6 +53,12 @@ To use the Lita Development Environment, follow these steps:
     lita-dev
     ~~~
 
+1.  Ensure all dependencies are installed by running `bundle`
+
+    ~~~
+    bundle
+    ~~~
+
 #### Next steps
 
 At this point, you will find yourself in a shell in a Debian system with Lita already installed.
@@ -130,4 +136,10 @@ For a full list of possible invocations of the `lita` command, run:
 
 ~~~
 lita help
+~~~
+
+If you run into any errors that result in `Bundler::GemNotFound`, you can always let bundler install any dependencies for you:
+
+~~~
+bundle
 ~~~
