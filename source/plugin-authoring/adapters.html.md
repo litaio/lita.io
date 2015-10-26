@@ -250,4 +250,4 @@ end
 
 This has the same effect as defining a named class and registering it manually, except that your adapter will be an anonymous class only stored internally in Lita's registry.
 
-For more detailed examples of adapters, check out the built in shell adapter, [lita-hipchat](https://github.com/jimmycuadra/lita-hipchat), or [lita-irc](https://github.com/jimmycuadra/lita-irc). Refer to Lita's [API documentation](http://rdoc.info/gems/lita/frames) for the exact API adapters must implement.
+For more detailed examples of adapters, check out the built in shell adapter, [lita-hipchat](https://github.com/litaio/lita-hipchat), or [lita-irc](https://github.com/litaio/lita-irc). Refer to Lita's [API documentation](http://rdoc.info/gems/lita/frames) for the exact API adapters must implement.
