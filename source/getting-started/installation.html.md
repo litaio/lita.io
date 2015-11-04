@@ -53,12 +53,6 @@ To use the Lita Development Environment, follow these steps:
     lita-dev
     ~~~
 
-1.  Ensure all dependencies are installed by running `bundle`
-
-    ~~~
-    bundle
-    ~~~
-
 #### Next steps
 
 At this point, you will find yourself in a shell in a Debian system with Lita already installed.
@@ -69,7 +63,14 @@ To create a new Lita project, run:
 lita new .
 ~~~
 
-This will generate a Gemfile and a lita_config.rb file, which is all you need to configure and run Lita.
+This will generate a Gemfile and a lita_config.rb file, which you will eventually edit to configure Lita.
+
+Ensure all dependencies are installed by running `bundle`
+
+~~~
+bundle
+~~~
+
 
 For a full list of commands Lita supports, run:
 
