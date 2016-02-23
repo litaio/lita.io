@@ -1,7 +1,7 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "bootstrap-sass", require: false
-gem "haml"
-gem "middleman"
-gem "middleman-deploy"
-gem "middleman-livereload"
+gem 'haml'
+gem 'middleman'
+gem 'middleman-livereload'
+gem 'middleman-sprockets', '>= 4.0.0.rc'
+gem 'bootstrap-sass'
