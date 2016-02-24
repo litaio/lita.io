@@ -1,0 +1,34 @@
+!!! 5
+%html
+  %head
+    %meta{ charset: "utf-8" }
+    %meta{ content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    = favicon_tag "images/favicon.ico"
+    %title= content_for?(:title) ? "#{content_for(:title)} - Lita.io" : "Lita: ChatOps for Ruby - Lita.io"
+    - unless content_for?(:title)
+      %meta{ name: "description", content: "Lita is a chat bot written in Ruby. It connects with your favorite chat service and helps keep you efficient while having fun." }
+    = stylesheet_link_tag 'www'
+  %body
+    %nav.navbar.navbar-default.navbar-static-top.navbar-inverse{ role: "navigation" }
+      .container
+        = www_link 'Lita.io', '/', class: 'navbar-brand hidden-xs'
+        .hidden-xs= plugins_link 'Plugins', '/', class: 'btn btn-primary navbar-btn navbar-right'
+        .navbar-text.navbar-right.hidden-xs
+        %ul.nav.navbar-nav.navbar-right
+          %li= docs_link 'Documentation', '/'
+          %li= www_link 'Support', '/support/'
+          %li.visible-xs= plugins_link 'Plugins', '/'
+    .content
+      = yield
+    %footer
+      .container
+        %ul.nav.navbar-nav
+          %li= link_to 'GitHub', 'https://github.com/litaio/lita'
+          %li= link_to 'Twitter', 'https://twitter.com/litachatbot'
+          %li= link_to 'Mailing List', 'https://groups.google.com/group/litaio'
+          %li= link_to 'IRC', 'http://webchat.freenode.net/?channels=lita.io'
+          %li= link_to 'Stickers', 'http://www.stickermule.com/marketplace/2466-lita'
+        %ul.nav.navbar.nav.navbar-right
+          %li
+            .navbar-text= "© #{Time.new.year} Lita.io"

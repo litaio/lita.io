@@ -4,13 +4,13 @@ section: Publishing
 menu: plugin-authoring
 ---
 
-When you're finished writing your plugin, you are encouraged to publish it publicly. This allows other Lita users to take advantage of your work and will cause it to appear in the catalog on the [plugins](https://www.lita.io/plugins) page.
+When you're finished writing your plugin, you are encouraged to publish it publicly. This allows other Lita users to take advantage of your work and will cause it to appear in the catalog on the [plugins](https://plugins.lita.io/) page.
 
 If you used one of Lita's generator commands to create the files for your plugin initially, then most of the work is done for you. Here's a checklist of things to go over before publication:
 
 *   Fill in all the sections of the README file that are marked as TODO.
 *   Make sure the gemspec file has all fields filled in, including the description, summary, and homepage. Double check that your contact information is correct in the authors and email fields.
-*   To have your plugin's type (adapter or handler) included in its information on the [plugins](https://www.lita.io/plugins) page, make sure the metadata field in the gemspec is set correctly. It should look like this:
+*   To have your plugin's type (adapter or handler) included in its information on the [plugins](https://plugins.lita.io/) page, make sure the metadata field in the gemspec is set correctly. It should look like this:
 
     ~~~ ruby
     spec.metadata = { "lita_plugin_type" => "handler" }

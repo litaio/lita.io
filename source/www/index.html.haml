@@ -1,0 +1,61 @@
+.container
+  .row.spacer.text-center
+    .hidden-xs= image_tag("lita.png", width: 195, height: 353, alt: "Lita")
+    %h1.headline.visible-xs Lita
+    %h2 A robot companion for your company's chat room
+
+.row.text-center.spacer.call-out-bar
+  = docs_link 'Install and get started', '/', class: 'call-out btn btn-success btn-lrg'
+  %ul.list-inline
+    %li
+      %span.github-btn-large
+        %a.gh-btn{ href: "https://github.com/litaio/lita" }
+          %span.gh-ico
+          %span.gh-text litaio/lita
+    %li.tw-xl
+      .btn-o
+        %a.tw-btn{ href: "https://twitter.com/litachatbot" }
+          %i
+          %span.label Follow <b>@litachatbot</b>
+
+.container
+  %p.lead.spacer Lita is a chat bot written in Ruby. It connects with your favorite chat service and helps keep you efficient while having fun.
+
+  .row.spacer.text-c
+    .col-md-4
+      %h3
+        .icon-lg.glyphicon.glyphicon-fast-forward
+        Automate tasks
+      Turn tedious, time-consuming, and error-prone tasks into simple commands.
+    .col-md-4
+      %h3
+        .icon-lg.glyphicon.glyphicon-eye-open
+        Provide visibility
+      Using chat as the primary interface for business operations lets everyone see what's happening all the time.
+    .col-md-4
+      %h3
+        .icon-lg.glyphicon.glyphicon-user
+        Build a culture
+      Having fun with your robot forms bonds and develops a sense of community.
+
+  .row.spacer
+    .col-md-3
+      %h4
+        .icon-lg.glyphicon.glyphicon-heart
+        Built with Ruby
+      Lita is written in <a href="https://www.ruby-lang.org/">Ruby</a>, a powerful, easy to learn programming language.
+    .col-md-3
+      %h4
+        .icon-lg.glyphicon.glyphicon-gift
+        Free and open source
+      Lita is free to use and the source code is available on <a href="https://github.com/litaio/lita">GitHub</a>.
+    .col-md-3
+      %h4
+        .icon-lg.glyphicon.glyphicon-ok-sign
+        Pick your chat service
+      Lita works with any chat service, including IRC, HipChat, and Campfire.
+    .col-md-3
+      %h4
+        .icon-lg.glyphicon.glyphicon-wrench
+        Extend with plugins
+      Install <a href="https://plugins.lita.io/">plugins</a> from those already published, or write your own.

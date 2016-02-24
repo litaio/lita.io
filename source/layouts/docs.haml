@@ -1,10 +1,10 @@
-= wrap_layout :outer do
+= wrap_layout :docs_outer do
   .container
     .page-header
       %h1= current_page.data.guide || current_page.data.title
 
     .row
-      .col-md-3= partial "#{current_page.data.menu}/menu"
+      .col-md-3= partial "docs/#{current_page.data.menu}/menu"
       .col-md-9
         - if current_page.data.section
           .page-header.first-heading

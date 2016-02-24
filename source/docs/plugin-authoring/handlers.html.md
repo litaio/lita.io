@@ -449,4 +449,4 @@ end
   The <a href="https://github.com/intridea/multi_json">MultiJson</a> library is bundled along with Lita. You may use it for parsing and generating JSON in your plugins.
 </div>
 
-For more detailed examples, check out the built in authorization, help, and web handlers, or any of the many existing handler plugins on the [plugins](https://www.lita.io/plugins) page. Refer to Lita's [API documentation](http://rdoc.info/gems/lita/frames) for the exact specifications of handlers' methods.
+For more detailed examples, check out the built in authorization, help, and web handlers, or any of the many existing handler plugins on the [plugins](https://plugins.lita.io/) page. Refer to Lita's [API documentation](http://rdoc.info/gems/lita) for the exact specifications of handlers' methods.

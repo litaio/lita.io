@@ -1,10 +1,8 @@
-config[:css_dir] = 'stylesheets'
-config[:js_dir] = 'javascripts'
-config[:images_dir] = 'images'
-
 config[:markdown] = { auto_ids: false }
 
-page '/index.html', layout: 'outer'
+page '/docs/index.html', layout: :docs_outer
+page '/docs/*', layout: :docs
+page '/www/*', layout: :www
 
 activate :directory_indexes
 
@@ -14,7 +12,7 @@ end
 
 configure :build do
   activate :asset_hash
-  activate :gzip
+  activate :asset_host, host: 'static.lita.io'
   activate :minify_css
   activate :minify_javascript
 end
@@ -34,5 +32,31 @@ helpers do
     end
 
     "#{title} - Lita.io"
+  end
+
+  def docs_link(text, url, options = {})
+    subsite_link("docs", text, url, options)
+  end
+
+  def plugins_link(text, url, options = {})
+    subsite_link("plugins", text, url, options)
+  end
+
+  def www_link(text, url, options = {})
+    subsite_link("www", text, url, options)
+  end
+
+  private
+
+  def subsite_link(subsite, text, url, options)
+    if url.start_with?("/")
+      if app.build?
+        url = File.join("https://#{subsite}.lita.io/", url)
+      else
+        url = File.join("/#{subsite}/", url)
+      end
+    end
+
+    link_to(text, url, options)
   end
 end

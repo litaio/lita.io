@@ -1,0 +1,28 @@
+.container
+  .row.spacer
+    .col-md-3
+      .hidden-xs= image_tag("lita.png", width: 195, height: 353, alt: "Lita")
+      %h1.headline.visible-xs Lita
+
+    .col-md-9
+      .page-header.first-heading
+        %h1 Lita Documentation
+
+      %p.lead <a href="https://www.lita.io/">Lita</a> is a chat bot written in Ruby.
+
+      %p This site contains documentation on using Lita and developing plugins for it. Choose one of the guides below to begin.
+
+      .row.spacer
+        .col-md-6
+          %h2= docs_link 'Getting Started', '/getting-started/'
+
+          %p If you're new to Lita and want to learn how to use it, this is the place to start.
+
+          %p Topics include a feature overview, installation, configuration, adding plugins, run time operation, and deployment.
+
+        .col-md-6
+          %h2= docs_link 'Plugin Authoring', '/plugin-authoring/'
+
+          %p If you're comfortable using Lita and you're ready to start developing your own plugins, refer to this guide.
+
+          %p Topics include adapters, handlers, extensions, localization, testing, and publishing.

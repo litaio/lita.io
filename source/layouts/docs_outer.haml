@@ -1,0 +1,58 @@
+!!! 5
+%html
+  %head
+    %meta{ content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    = favicon_tag "images/favicon.ico"
+    %title= title_tag
+    - if current_page.data.description
+      %meta{ name: "description", content: current_page.data.description }
+    - else
+      %meta{ name: "description", content: "Documentation for Lita, a chat bot written in Ruby." }
+    = stylesheet_link_tag "docs"
+  %body
+    %nav.navbar.navbar-default.navbar-static-top.navbar-inverse{ role: "navigation" }
+      .container
+        = docs_link 'Lita Documentation', '/', class: 'navbar-brand hidden-xs'
+        %ul.nav.navbar-nav.navbar-right
+          %li.dropdown
+            = docs_link 'Getting Started <b class="caret"></b>', '/getting-started/'
+            %ul.dropdown-menu
+              %li= docs_link 'Overview', '/getting-started/'
+              %li= docs_link 'Installation', '/getting-started/installation/'
+              %li= docs_link 'Plugins', '/getting-started/plugins/'
+              %li= docs_link 'Configuration', '/getting-started/configuration/'
+              %li= docs_link 'Usage', '/getting-started/usage/'
+              %li= docs_link 'Deployment', '/getting-started/deployment/'
+              %li= docs_link 'Versioning Policy', '/getting-started/versioning-policy/'
+          %li.dropdown
+            = docs_link 'Plugin Authoring <b class="caret"></b>', '/plugin-authoring/'
+            %ul.dropdown-menu
+              %li= docs_link 'Overview', '/plugin-authoring/'
+              %li= docs_link 'Adapters', '/plugin-authoring/adapters/'
+              %li= docs_link 'Handlers', '/plugin-authoring/handlers/'
+              %li= docs_link 'Events', '/plugin-authoring/events/'
+              %li= docs_link 'Localization', '/plugin-authoring/localization/'
+              %li= docs_link 'Extensions', '/plugin-authoring/extensions/'
+              %li= docs_link 'Testing', '/plugin-authoring/testing/'
+              %li= docs_link 'Publishing', '/plugin-authoring/publishing/'
+          %li.dropdown
+            = docs_link 'Releases <b class="caret"></b>', '/releases/'
+            %ul.dropdown-menu
+              %li= docs_link 'Lita 4', '/releases/4/'
+              %li= docs_link 'Lita 3', '/releases/3/'
+          %li.navbar-link= www_link 'Lita.io <span class="glyphicon glyphicon-arrow-right"></span>', '/'
+    .content
+      = yield
+    %footer
+      .container
+        %ul.nav.navbar-nav
+          %li= link_to 'GitHub', 'https://github.com/litaio/lita'
+          %li= link_to 'Twitter', 'https://twitter.com/litachatbot'
+          %li= link_to 'Mailing List', 'https://groups.google.com/group/litaio'
+          %li= link_to 'IRC', 'http://webchat.freenode.net/?channels=lita.io'
+          %li= link_to 'Stickers', 'http://www.stickermule.com/marketplace/2466-lita'
+        %ul.nav.navbar.nav.navbar-right
+          %li
+            .navbar-text= "© #{Time.new.year} Lita.io"
+    = javascript_include_tag 'application'
