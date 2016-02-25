@@ -1,5 +1,5 @@
 class Plugin
-  FILE_PATH = File.expand_path('../../data/plugins.json', __FILE__)
+  FILE_PATH = File.expand_path('../../plugin_data/plugins.json', __FILE__)
 
   attr_accessor :authors
   attr_accessor :description

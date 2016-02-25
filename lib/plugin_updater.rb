@@ -12,7 +12,7 @@ class PluginUpdater
     lita-slack-handler
     lita-talk
   )
-  FILE_PATH = File.expand_path('../../data/plugins.json', __FILE__)
+  FILE_PATH = File.expand_path('../../plugin_data/plugins.json', __FILE__)
   GEM_URL = 'https://rubygems.org/api/v1/gems/%s.json'
   REVERSE_DEPENDENCIES_URL = 'https://rubygems.org/api/v1/gems/lita/reverse_dependencies.json'
 
