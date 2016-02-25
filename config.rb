@@ -2,8 +2,8 @@ require_relative 'lib/lita_plugins'
 
 config[:markdown] = { auto_ids: false }
 
-page '/docs/index.html', layout: :docs_outer
 page '/docs/*', layout: :docs
+page '/docs/index.html', layout: :docs_outer
 page '/plugins/*', layout: :plugins
 page '/www/*', layout: :www
 
