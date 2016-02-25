@@ -10,10 +10,7 @@ bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
 bundle exec middleman build
 
 cd build
-aws s3 sync assets s3://static.lita.io
-aws s3 sync images s3://static.lita.io
-aws s3 sync javascripts s3://static.lita.io
-aws s3 sync stylesheets s3://static.lita.io
+aws s3 sync . s3://static.lita.io --delete --exclude '*' --include 'assets' --include 'images' --include 'javascripts' --include 'stylesheets'
 
 cd docs
 aws s3 sync . s3://docs.lita.io --content-type 'text/html; charset=utf-8' --delete
