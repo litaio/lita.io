@@ -23,7 +23,7 @@ menu: getting-started
 
 <h3 id="coming-from-hubot">Coming from Hubot</h3>
 
-Lita draws much inspiration from GitHub's fantastic [Hubot](http://hubot.github.com/), but has a few key differences and strengths:
+Lita draws much inspiration from GitHub's fantastic [Hubot](https://hubot.github.com/), but has a few key differences and strengths:
 
 * It's written in Ruby.
 * It exposes the full power of Redis rather than using it to serialize JSON.

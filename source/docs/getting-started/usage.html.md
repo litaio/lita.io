@@ -54,7 +54,7 @@ Lita exposes some basic information about itself while it's running. To see the 
 
 ~~~
 You: Lita info
-Lita: Lita 4.0.0 - http://www.lita.io/
+Lita: Lita 4.0.0 - https://www.lita.io/
 Lita: Redis 2.8.12 - Memory used: 9.6M
 ~~~
 

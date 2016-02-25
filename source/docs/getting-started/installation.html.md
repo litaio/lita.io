@@ -19,7 +19,7 @@ To use the Lita Development Environment, follow these steps:
 
 1.  Install [Vagrant](https://www.vagrantup.com/) for your operating system.
 
-1.  Install [VirtualBox](https://www.virtualbox.org/), the virtualization software Vagrant uses behind the scenes. (If you're already a Vagrant user and you prefer using a [VMware](http://www.vmware.com/) provider, you don't need to install VirtualBox. The Lita Development Environment supports both providers.)
+1.  Install [VirtualBox](https://www.virtualbox.org/), the virtualization software Vagrant uses behind the scenes. (If you're already a Vagrant user and you prefer using a [VMware](https://www.vmware.com/) provider, you don't need to install VirtualBox. The Lita Development Environment supports both providers.)
 
 1.  Git clone the repository:
 
