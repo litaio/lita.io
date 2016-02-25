@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'faraday'
 gem 'haml'
 gem 'middleman'
 gem 'middleman-livereload'

@@ -2,3 +2,4 @@
 /.cache
 /.sass-cache
 /build
+/data/plugins.json

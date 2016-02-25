@@ -1,10 +1,14 @@
+require_relative 'lib/lita_plugins'
+
 config[:markdown] = { auto_ids: false }
 
 page '/docs/index.html', layout: :docs_outer
 page '/docs/*', layout: :docs
+page '/plugins/*', layout: :plugins
 page '/www/*', layout: :www
 
 activate :directory_indexes
+activate :lita_plugins
 
 configure :server do
   activate :livereload

@@ -34,6 +34,8 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.9.1)
     execjs (2.6.0)
+    faraday (0.9.2)
+      multipart-post (>= 1.2, < 3)
     fast_blank (1.0.0)
     fastimage (1.8.1)
       addressable (~> 2.3, >= 2.3.5)
@@ -93,6 +95,7 @@ GEM
     mime-types-data (3.2016.0221)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    multipart-post (2.0.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     padrino-helpers (0.13.1)
@@ -129,6 +132,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-sass
+  faraday
   haml
   middleman
   middleman-livereload
