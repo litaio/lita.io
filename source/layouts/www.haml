@@ -5,8 +5,10 @@
     %meta{ content: "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
     = favicon_tag "images/favicon.ico"
-    %title= content_for?(:title) ? "#{content_for(:title)} - Lita.io" : "Lita: ChatOps for Ruby - Lita.io"
-    - unless content_for?(:title)
+    - if content_for?(:title)
+      %title= "#{yield_content(:title)} - Lita.io"
+    - else
+      %title Lita: ChatOps for Ruby - Lita.io
       %meta{ name: "description", content: "Lita is a chat bot written in Ruby. It connects with your favorite chat service and helps keep you efficient while having fun." }
     = stylesheet_link_tag 'www'
   %body
