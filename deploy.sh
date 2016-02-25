@@ -2,12 +2,14 @@
 
 set -euxo pipefail
 
-bundle install --path /var/bundle --jobs $(nproc) --clean
+if [ -z "${SYNC_ONLY:-}" ]; then
+  bundle install --path /var/bundle --jobs $(nproc) --clean
 
-mkdir -p plugin_data
-bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
+  mkdir -p plugin_data
+  bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
 
-bundle exec middleman build
+  bundle exec middleman build
+fi
 
 cd build
 aws s3 sync . s3://static.lita.io --delete --exclude '*' --include 'assets/*' --include 'images/*' --include 'javascripts/*' --include 'stylesheets/*'
