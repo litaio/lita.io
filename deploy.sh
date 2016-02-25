@@ -2,11 +2,10 @@
 
 set -euxo pipefail
 
-gem install bundler
-
 bundle install --path /var/bundle --jobs $(nproc) --clean
 
-bundle exec ruby -Ilib -rplugin_updater -e 'PluginUpdater.update'
+mkdir -p plugin_data
+bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
 
 bundle exec middleman build
 

@@ -1,8 +1,0 @@
-.bundle
-.dockerignore
-.git
-.gitignore
-Dockerfile
-README.md
-source/index.html
-systemd

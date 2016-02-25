@@ -16,7 +16,7 @@ end
 
 configure :build do
   activate :asset_hash
-  activate :asset_host, host: 'static.lita.io'
+  activate :asset_host, host: 'https://static.lita.io'
   activate :minify_css
   activate :minify_javascript
 end
