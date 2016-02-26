@@ -8,7 +8,11 @@ if [ -z "${SYNC_ONLY:-}" ]; then
   mkdir -p plugin_data
   bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
 
-  bundle exec middleman build
+  if [ -z "${VERBOSE:-}" ]; then
+    bundle exec middleman build
+  else
+    bundle exec middleman build --verbose
+  fi
 fi
 
 cd build

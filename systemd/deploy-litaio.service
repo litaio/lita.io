@@ -10,5 +10,5 @@ Type=OneShot
 RemainAfterExit=yes
 ExecStartPre=-/usr/bin/docker kill deploy-litaio
 ExecStartPre=-/usr/bin/docker rm deploy-litaio
-ExecStart=/usr/bin/docker run --name deploy-litaio -v /etc/deploy-litaio/aws_credentials:/root/.aws/credentials -v /var/deploy-litaio/bundle:/var/bundle -v /var/deploy-litaio/app:/app litaio/deploy-litaio
+ExecStart=/usr/bin/docker run --name deploy-litaio -v /etc/deploy-litaio/aws_credentials:/root/.aws/credentials -v /var/deploy-litaio/bundle:/var/bundle -v /var/deploy-litaio/app:/app -e VERBOSE=1 litaio/deploy-litaio
 ExecStop=/usr/bin/docker stop deploy-litaio
