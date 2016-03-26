@@ -1,5 +1,5 @@
 ---
-guide: Plugin Authoring
+guide: Plugin Authoring Guide
 section: Publishing
 menu: plugin-authoring
 ---

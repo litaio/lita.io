@@ -1,5 +1,5 @@
 ---
-guide: Getting Started
+guide: User Guide
 section: Usage
 menu: getting-started
 ---

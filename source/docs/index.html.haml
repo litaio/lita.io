@@ -14,15 +14,29 @@
 
       .row.spacer
         .col-md-6
-          %h2= docs_link 'Getting Started', '/getting-started/'
+          %h2= docs_link 'User Guide', '/getting-started/'
 
           %p If you're new to Lita and want to learn how to use it, this is the place to start.
 
           %p Topics include a feature overview, installation, configuration, adding plugins, run time operation, and deployment.
 
         .col-md-6
-          %h2= docs_link 'Plugin Authoring', '/plugin-authoring/'
+          %h2= docs_link 'Plugin Authoring Guide', '/plugin-authoring/'
 
           %p If you're comfortable using Lita and you're ready to start developing your own plugins, refer to this guide.
 
           %p Topics include adapters, handlers, extensions, localization, testing, and publishing.
+      .row.spacer
+        .col-md-6
+          %hgroup
+            %h2 API Overview
+            %p
+              %strong Coming soon!
+
+          %p This guide provides a high-level overview of Lita's Ruby API. It will help you get a sense of the features available and how to use them.
+
+        .col-md-6
+          %h2
+            %a{ href: "http://www.rubydoc.info/gems/lita" } API Reference
+
+          %p Whether you are deploying Lita or developing plugins, use the API documentation as a reference for all of Lita's types and methods.
