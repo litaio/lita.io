@@ -1,5 +1,6 @@
 require 'json'
 require 'faraday'
+require 'progress'
 
 class PluginUpdater
   BANNED_PLUGINS = %w(
@@ -18,7 +19,7 @@ class PluginUpdater
 
   class << self
     def update
-      dump(reverse_dependencies.map { |name| attributes_for(name) })
+      dump(reverse_dependencies.map.with_progress("Updating plugins") { |name| attributes_for(name) })
     end
 
     private
