@@ -32,14 +32,23 @@
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['adapter']
 
-  %h2#handlers.spacer= "Handlers (#{lita_plugins['handler'].size})"
+  %h2#handlers.spacer
+    = "Handlers (#{lita_plugins['handler'].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['handler']
 
-  %h2#extensions.spacer= "Extensions (#{lita_plugins['extension'].size})"
+  %h2#extensions.spacer
+    = "Extensions (#{lita_plugins['extension'].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['extension']
 
-  %h2#unknown.spacer= "Plugins of unknown type (#{lita_plugins[nil].size})"
+  %h2#unknown.spacer
+    = "Plugins of unknown type (#{lita_plugins[nil].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins[nil]
