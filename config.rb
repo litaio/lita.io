@@ -50,6 +50,10 @@ helpers do
     subsite_link("www", text, url, options)
   end
 
+  def icon(name, custom_class=nil)
+    content_tag(:i, class: "fa fa-#{name} #{custom_class}") { '' }
+  end
+
   private
 
   def subsite_link(subsite, text, url, options)
