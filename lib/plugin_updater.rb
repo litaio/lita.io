@@ -1,5 +1,4 @@
 require 'json'
-
 require 'faraday'
 
 class PluginUpdater
@@ -13,8 +12,9 @@ class PluginUpdater
     lita-talk
   )
   FILE_PATH = File.expand_path('../../plugin_data/plugins.json', __FILE__)
-  GEM_URL = 'https://rubygems.org/api/v1/gems/%s.json'
-  REVERSE_DEPENDENCIES_URL = 'https://rubygems.org/api/v1/gems/lita/reverse_dependencies.json'
+  RUBYGEMS_URL = 'https://rubygems.org'
+  GEMS_PATH = '/api/v1/gems/%s.json'
+  REVERSE_DEPENDENCIES_PATH = '/api/v1/gems/lita/reverse_dependencies.json'
 
   class << self
     def update
@@ -24,7 +24,7 @@ class PluginUpdater
     private
 
     def attributes_for(name)
-      response = Faraday.get(GEM_URL % name)
+      response = rubygems_api.get(GEMS_PATH % name)
       data = JSON.load(response.body)
       spec = gemspec_for(data)
 
@@ -41,6 +41,13 @@ class PluginUpdater
       STDERR.puts "JSON payload failed to parse. Payload:"
       STDERR.puts response.body.inspect
       STDERR.puts e
+    end
+
+    def rubygems_api
+      @conn ||= Faraday.new(url: RUBYGEMS_URL) do |faraday|
+        # Use the net-http-persistent implementation
+        faraday.adapter  :net_http_persistent
+      end
     end
 
     def dump(plugins)
@@ -70,7 +77,7 @@ class PluginUpdater
     end
 
     def reverse_dependencies
-      response = Faraday.get(REVERSE_DEPENDENCIES_URL)
+      response = rubygems_api.get(REVERSE_DEPENDENCIES_PATH)
       plugin_names = JSON.load(response.body)
       plugin_names.reject { |name| BANNED_PLUGINS.include?(name) }
     end
