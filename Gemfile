@@ -1,6 +1,9 @@
 source 'https://rubygems.org'
 
+gem 'rake'
 gem 'faraday'
+gem 'net-http-persistent'
+gem 'progress'
 gem 'haml'
 gem 'middleman'
 gem 'middleman-livereload'

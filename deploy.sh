@@ -4,9 +4,7 @@ set -euxo pipefail
 
 if [ -z "${SYNC_ONLY:-}" ]; then
   bundle install --path /var/bundle --jobs $(nproc) --clean
-
-  mkdir -p plugin_data
-  bundle exec ruby -Ilib -e 'require "plugin_updater"; PluginUpdater.update'
+  bundle exec rake update_plugins
 
   if [ -z "${VERBOSE:-}" ]; then
     bundle exec middleman build
