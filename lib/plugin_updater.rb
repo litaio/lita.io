@@ -46,7 +46,6 @@ class PluginUpdater
 
     def rubygems_api
       @conn ||= Faraday.new(url: RUBYGEMS_URL) do |faraday|
-        # Use the net-http-persistent implementation
         faraday.adapter  :net_http_persistent
       end
     end
