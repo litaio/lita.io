@@ -4,32 +4,51 @@
 
   %p The following is a list of all plugins available for Lita. Plugins are distributed as gems. To have your plugin added to this list, simply publish it to RubyGems. Consult <a href="https://docs.lita.io/plugin-authoring/publishing/">publishing</a> on the plugin authoring page for details.
 
-  .well
-    %p Jump to:
-    %a{ href: "#adapters" } Adapters
-    = "(#{lita_plugins['adapter'].size})"
-    \-
-    %a{ href: "#handlers" } Handlers
-    = "(#{lita_plugins['handler'].size})"
-    \-
-    %a{ href: "#extensions" } Extensions
-    = "(#{lita_plugins['extension'].size})"
-    \-
-    %a{ href: "#unknown" } Unknown
-    = "(#{lita_plugins[nil].size})"
+  %nav.navbar.navbar-default.spacer
+    .container
+      %ul.nav.navbar-nav
+        %li{ role: "presentation" }
+          %a{ href: "#adapters" }
+            Adapters
+            %span.badge
+              = lita_plugins['adapter'].size
+        %li
+          %a{ href: "#handlers" }
+            Handlers
+            %span.badge
+              = lita_plugins['handler'].size
+        %li
+          %a{ href: "#extensions" }
+            Extensions
+            %span.badge
+              = lita_plugins['extension'].size
+        %li
+          %a{ href: "#unknown" }
+            Unknown
+            %span.badge
+              = lita_plugins[nil].size
 
   %h2#adapters.spacer= "Adapters (#{lita_plugins['adapter'].size})"
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['adapter']
 
-  %h2#handlers.spacer= "Handlers (#{lita_plugins['handler'].size})"
+  %h2#handlers.spacer
+    = "Handlers (#{lita_plugins['handler'].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['handler']
 
-  %h2#extensions.spacer= "Extensions (#{lita_plugins['extension'].size})"
+  %h2#extensions.spacer
+    = "Extensions (#{lita_plugins['extension'].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins['extension']
 
-  %h2#unknown.spacer= "Plugins of unknown type (#{lita_plugins[nil].size})"
+  %h2#unknown.spacer
+    = "Plugins of unknown type (#{lita_plugins[nil].size})"
+    %a.pull-right{ href: "#", title: "Go back to top" }
+      =icon('angle-double-up', 'navigation-helper')
 
   .spacer= partial 'plugins/plugin', collection: lita_plugins[nil]
