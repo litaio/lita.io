@@ -9,6 +9,7 @@ page '/www/*', layout: :www
 
 activate :directory_indexes
 activate :lita_plugins
+activate :sprockets
 
 configure :server do
   activate :livereload
