@@ -13,5 +13,6 @@
     %p.text-right
       %strong
         %span= "Latest version: #{plugin.version}"
-        %br
-        %span= "Required Lita version: #{plugin.requirements_list}"
+        - unless plugin.requirements_list.nil?
+          %br
+          %span= "Required Lita version: #{plugin.requirements_list}"

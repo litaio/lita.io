@@ -73,6 +73,9 @@ class PluginUpdater
 
     def requirements_list_for(spec)
       dep = spec.dependencies.find { |dep| dep.name == 'lita' }
+
+      return if dep.nil?
+
       dep.requirements_list.join(', ')
     end
 
