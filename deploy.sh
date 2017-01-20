@@ -3,7 +3,6 @@
 set -euxo pipefail
 
 if [ -z "${SYNC_ONLY:-}" ]; then
-  bundle install --path /var/bundle --jobs $(nproc) --clean
   bundle exec rake update_plugins
 
   if [ -z "${VERBOSE:-}" ]; then
