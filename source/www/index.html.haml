@@ -4,19 +4,20 @@
     %h1.headline.visible-xs Lita
     %h2 A robot companion for your company's chat room
 
-.row.text-center.spacer.call-out-bar
-  = docs_link 'Install and get started', '/', class: 'call-out btn btn-success btn-lrg'
-  %ul.list-inline
-    %li
-      %span.github-btn-large
-        %a.gh-btn{ href: "https://github.com/litaio/lita" }
-          %span.gh-ico
-          %span.gh-text litaio/lita
-    %li.tw-xl
-      .btn-o
-        %a.tw-btn{ href: "https://twitter.com/litachatbot" }
-          %i
-          %span.label Follow <b>@litachatbot</b>
+.container-fluid
+  .row.text-center.spacer.call-out-bar
+    = docs_link 'Install and get started', '/', class: 'call-out btn btn-success btn-lrg'
+    %ul.list-inline
+      %li
+        %span.github-btn-large
+          %a.gh-btn{ href: "https://github.com/litaio/lita" }
+            %span.gh-ico
+            %span.gh-text litaio/lita
+      %li.tw-xl
+        .btn-o
+          %a.tw-btn{ href: "https://twitter.com/litachatbot" }
+            %i
+            %span.label Follow <b>@litachatbot</b>
 
 .container
   %p.lead.spacer Lita is a chat bot written in Ruby. It connects with your favorite chat service and helps keep you efficient while having fun.
