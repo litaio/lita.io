@@ -30,7 +30,7 @@ GEM
     erubis (2.7.0)
     eventmachine (1.2.5)
     execjs (2.7.0)
-    faraday (0.14.0)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     fast_blank (1.0.0)
     fastimage (2.1.1)
@@ -91,7 +91,7 @@ GEM
       middleman-core (~> 4.0)
       sprockets (>= 3.0)
     minitest (5.11.3)
-    multipart-post (2.0.0)
+    multipart-post (2.1.1)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
     padrino-helpers (0.13.3.4)
@@ -140,4 +140,4 @@ DEPENDENCIES
   rake
 
 BUNDLED WITH
-   1.16.1
+   1.17.3
