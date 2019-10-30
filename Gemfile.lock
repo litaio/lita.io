@@ -34,7 +34,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     fast_blank (1.0.0)
     fastimage (2.1.1)
-    ffi (1.9.23)
+    ffi (1.11.1)
     font-awesome-sass (4.5.0)
       sass (>= 3.2)
     haml (5.0.4)
