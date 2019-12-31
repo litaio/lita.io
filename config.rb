@@ -1,6 +1,10 @@
 require_relative 'lib/lita_plugins'
 
-config[:markdown] = { auto_ids: false }
+config[:markdown] = { auto_ids: false } if config[:markdown].nil?
+config[:sass_assets_paths].concat([
+  Bootstrap.stylesheets_path,
+  FontAwesome::Sass.stylesheets_path,
+]) unless config[:sass_assets_paths].include?(Bootstrap.stylesheets_path)
 
 page '/docs/index.html', layout: :docs_outer
 page '/docs/*', layout: :docs
@@ -9,7 +13,6 @@ page '/www/*', layout: :www
 
 activate :directory_indexes
 activate :lita_plugins
-activate :sprockets
 
 configure :server do
   activate :livereload
