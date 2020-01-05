@@ -1,0 +1,11 @@
+.DS_Store
+.bundle
+.cache
+.dockerignore
+.git
+.gitignore
+.sass-cache
+Dockerfile
+README.md
+build
+plugin_data
