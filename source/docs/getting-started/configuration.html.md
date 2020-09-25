@@ -31,7 +31,7 @@ Name | Type | Description | Default
 `config.robot.mention_name` | `String` | The name Lita will look for in messages to determine if the message is being addressed to it. Usually this is the same as the display name, but in some cases it may not be. For example, in HipChat, display names are required to be a first and last name, such as "Lita Bot", whereas the mention system would use a name like "LitaBot". | `config.robot.name`
 `config.robot.alias` | `String` | The alias Lita will look for in messages to determine if the message is being addressed to it. Useful if you want to use something shorter than Lita's name or mention name, such as a slash, to send it a command. | None
 `config.robot.adapter` | `Symbol`, `String` | The adapter to use. | `:shell`
-`config.robot.locale` | `Symbol`, `String` | The locale code for the language Lita's user interface will use. | `I18n.locale`
+`config.robot.default_locale` | `Symbol`, `String` | The locale code for the language Lita's user interface will use. | `I18n.default_locale`
 `config.robot.log_level` | `Symbol`, `String` | The severity level of log messages to output. Valid options are, in order of severity: `:debug`, `:info`, `:warn`, `:error`, and `:fatal`. For whichever level you choose, log messages of that severity and greater will be output. | `:info`
 `config.robot.admins` | `Array<String>` | An array of string user IDs which will tell Lita which users are considered administrators. Only these users will have access to Lita's "auth" commands. The IDs needed for this attribute can be found using the built-in [user info](/getting-started/usage/#user-info) command. | `nil`
 `config.robot.error_handler` | `#call` | A callable object invoked whenever an exception is raised. | `-> (error) {}`
@@ -47,16 +47,18 @@ Name | Type | Description | Default
 
 ### Localization {#localization}
 
-Lita is internationalized and can use any localization. Setting your preferred localization is as easy as setting the configuration attribute `config.robot.locale` to the preferred language code. If a translation is not available for the selected locale, Lita will fall back to the default locale, which is English. Locales can be specified with an optional territory, and will fall back to the general language if a territory-specific translation is not available.
+Lita is internationalized and can use any localization. Setting your preferred localization is as easy as setting the configuration attribute `config.robot.default_locale` to the preferred language code. If a translation is not available for the selected locale, Lita will fall back to the default locale, which is English. Locales can be specified with an optional territory, and will fall back to the general language if a territory-specific translation is not available.
 
 ~~~ ruby
 Lita.configure do |config|
   # Tries Mexican Spanish, falling back to Spanish, and then to English.
-  config.robot.locale = "es-MX"
+  config.robot.default_locale = "es-MX"
 
   # Tries Spanish, falling back to English.
-  config.robot.locale = "es"
+  config.robot.default_locale = "es"
 end
 ~~~
 
 If the environment variable <var>LANG</var> is set, Lita will use its value for setting the locale upon start up. This value is overriden if `config.robot.locale` is set.
+
+Note: Prior to Lita v4.8.0, the locale was set via `config.robot.locale` instead of `config.robot.default_locale`. The latter is preferred because it affects the entire program, whereas the former affects only the current thread. Because incoming messages are dispatched within threads, using `config.robot.locale` would appear not to persist across incoming messages, which could be surprising.
