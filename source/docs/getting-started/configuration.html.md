@@ -33,8 +33,9 @@ Name | Type | Description | Default
 `config.robot.adapter` | `Symbol`, `String` | The adapter to use. | `:shell`
 `config.robot.default_locale` | `Symbol`, `String` | The locale code for the language Lita's user interface will use. | `I18n.default_locale`
 `config.robot.log_level` | `Symbol`, `String` | The severity level of log messages to output. Valid options are, in order of severity: `:debug`, `:info`, `:warn`, `:error`, and `:fatal`. For whichever level you choose, log messages of that severity and greater will be output. | `:info`
+`config.robot.log_formatter` | `#call` | A callable object that is used to determine the format for log messages. When called, the object will receive four arguments: severity (the log level), datetime (the timestamp of the message), progname (the name of the program), and msg (the actual message to be logged). It should return a string which will be the final message that is logged. | `->(severity, datetime, progname, msg) { "[#{datetime.utc}] #{severity}: #{msg}\n" }`
 `config.robot.admins` | `Array<String>` | An array of string user IDs which will tell Lita which users are considered administrators. Only these users will have access to Lita's "auth" commands. The IDs needed for this attribute can be found using the built-in [user info](/getting-started/usage/#user-info) command. | `nil`
-`config.robot.error_handler` | `#call` | A callable object invoked whenever an exception is raised. | `-> (error) {}`
+`config.robot.error_handler` | `#call` | A callable object invoked whenever an exception is raised. When called, the object will receive one argument: error (the exception that occurred). | `-> (error) {}`
 `config.redis` | `Hash` | Options for the Redis connection. | `{}`
 `config.http.host` | `String` | The host Lita's web server will bind to. | `"0.0.0.0"`
 `config.http.port` | `Integer`, `String` | The port Lita's web server will listen on. | `8080`
