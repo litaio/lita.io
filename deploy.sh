@@ -13,7 +13,7 @@ if [ -z "${SYNC_ONLY:-}" ]; then
 fi
 
 cd build
-aws s3 sync . s3://static.lita.io --delete --exclude '*' --include 'assets/*' --include 'images/*' --include 'javascripts/*' --include 'stylesheets/*'
+aws s3 sync . s3://static.lita.io --delete --exclude '*' --include 'fonts/*' --include 'images/*' --include 'javascripts/*' --include 'stylesheets/*'
 
 cd docs
 aws s3 sync . s3://docs.lita.io --content-type 'text/html; charset=utf-8' --delete
